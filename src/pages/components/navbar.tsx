@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function Navbar() {
@@ -26,19 +27,21 @@ export default function Navbar() {
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a>Tutor Search</a>
+              <Link href="/search">Tutor Search</Link>
             </li>
             <li>
               <a>About Us</a>
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Delphis</a>
+        <Link className="btn btn-ghost text-xl" href="/">
+          Delphis
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>Tutor Search</a>
+            <Link href="/search">Tutor Search</Link>
           </li>
           <li>
             <a>About Us</a>
@@ -46,7 +49,7 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Find Tutor</a>
+        <a className="btn btn-primary">Find Tutor</a>
       </div>
     </div>
   );
