@@ -6,19 +6,20 @@ import { MdLocationOn } from "react-icons/md";
 
 export default function Search() {
   return (
-    <>
+    <div className="flex flex-col gap-5 py-10">
       <Filters />
       <Tutors />
-    </>
+    </div>
   );
 }
 
 function Filters() {
   const [filters, setFilters] = useState<string[]>([]);
 
-  const onClick = (newFilter: string) => {
+  const handleClick = (newFilter: string) => {
     if (!filters.includes(newFilter)) {
       setFilters([...filters, newFilter]);
+      return;
     }
     setFilters((filters) => filters.filter((item) => item !== newFilter));
   };
@@ -32,7 +33,7 @@ function Filters() {
             <button
               key={index}
               className={`btn btn-sm ${filters.includes(item) && "btn-secondary"}`}
-              onClick={() => onClick(item)}
+              onClick={() => handleClick(item)}
             >
               {item}
             </button>
@@ -190,7 +191,7 @@ function Filters() {
         <Grade />
         <Others />
       </div>
-      <div className="flex justify-center gap-2 py-5">
+      <div className="flex justify-center gap-2">
         {filters.map((filter, index) => (
           <button
             key={index}
@@ -212,7 +213,7 @@ function Tutors() {
   function TutorCard() {
     const [tab, setTab] = useState("Profile");
     return (
-      <div className="card bg-base-100 w-1/2 shadow-xl md:w-1/3 lg:w-1/4">
+      <div className="card bg-base-100 shadow-xl">
         <figure>
           <img
             src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
@@ -274,10 +275,14 @@ function Tutors() {
     );
   }
   return (
-    <div className="pt-5">
-      <h1 className="text-lg font-bold">Find the best tutor for you</h1>
-      <small>266 Tutors</small>
-      <div className="flex flex-wrap gap-3">
+    <div className="">
+      <div className="mb-5 text-center">
+        <h1 className="text-lg font-bold">Find the best tutor for you</h1>
+        <small>
+          <span className="text-primary font-semibold">4</span> Tutors
+        </small>
+      </div>
+      <div className="grid grid-cols-1 gap-3 px-24 md:grid-cols-2 lg:grid-cols-3">
         <TutorCard />
         <TutorCard />
         <TutorCard />

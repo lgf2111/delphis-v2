@@ -1,13 +1,13 @@
-import { IconType } from "react-icons";
+import { type IconType } from "react-icons";
 import { IoIosAlarm } from "react-icons/io";
 
 export default function Home() {
   return (
-    <main>
+    <main className="flex flex-col gap-10 py-10">
       <Hero />
-      <Announcements />
+      {/* <Announcements /> */}
       <Features />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <CTA />
     </main>
   );
@@ -15,20 +15,24 @@ export default function Home() {
 
 function Hero() {
   return (
-    <div className="hero min-h-screen">
+    <div className="hero">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <img
           src="https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg"
           className="max-w-sm rounded-lg shadow-2xl"
         />
         <div>
-          <h1 className="text-5xl font-bold">
-            Connect the best tutors for you.
-          </h1>
-          <p className="py-6">
-            It helps you find top-notch tutors in Singapore.
-          </p>
-          <button className="btn btn-primary">Learn more</button>
+          <h1 className="text-5xl font-bold">Find your desired tutors here</h1>
+          <ul className="list-inside list-disc py-6">
+            <li>
+              Take customisable 1-on-1 lessons trusted by millions of users
+            </li>
+            <li>
+              Learn from certified teachers that fit your budget and schedule
+            </li>
+            <li>Wide variety of tutors and subject for you to choose from</li>
+          </ul>
+          <button className="btn btn-primary px-10">Learn more</button>
         </div>
       </div>
     </div>
@@ -37,8 +41,8 @@ function Hero() {
 
 function Announcements() {
   return (
-    <>
-      <h1 className="text-center text-lg font-medium">Latest Announcements</h1>
+    <div>
+      <h1 className="text-center text-lg font-bold">Latest Announcements</h1>
       <div className="carousel w-full">
         <div id="item1" className="carousel-item w-full">
           <img
@@ -79,7 +83,7 @@ function Announcements() {
           4
         </a>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -91,43 +95,34 @@ function Features() {
   }
   const Feature = ({ Icon, title, description }: FeatureProps) => {
     return (
-      <div className="flex-1">
+      <div className="flex flex-1 flex-col flex-wrap items-center px-3 text-center">
         <Icon className="bg-primary rounded-xl p-1 text-white" size={50} />
-        <h1 className="text-lg font-medium">{title}</h1>
-        <p>{description}</p>
+        <h1 className="text-lg font-bold">{title}</h1>
+        <p className="">{description}</p>
       </div>
     );
   };
   const features = [
     {
       Icon: IoIosAlarm,
-      title: "Quality",
-      description:
-        "The tutors from Singapore's top three universities, and the performance and identities of all tutors are verified by professionals.",
+      title: "Choose ideal tutor",
+      description: "Find tutors best suited for you yourself.",
     },
     {
       Icon: IoIosAlarm,
-      title: "Quantity",
-      description: "The number of tutors exceeds 100,000 globally.",
+      title: "Free matching service",
+      description: "Find tutors best suited for you automatically.",
     },
     {
       Icon: IoIosAlarm,
-      title: "Convenience",
-      description:
-        "You can choose the tutor who suits you best from the tutor's detailed information.",
+      title: "Free trial lesson",
+      description: "Tutors will be assigned to your for free trial lesson.",
     },
   ];
   return (
     <div className="flex flex-col">
-      <div className="text-center">
-        <h1 className="text-lg font-medium">Why Choose Delphis?</h1>
-        <small>
-          The tutors from Singapore&apos;s top three universities, and the
-          performance and identities of all tutors are verified by
-          professionals. The number of tutors exceeds 100,000 globally.
-        </small>
-      </div>
-      <div className="flex">
+      <h1 className="text-center text-lg font-bold">Why Choose Delphis?</h1>
+      <div className="flex pt-5">
         {features.map((feature, index) => (
           <Feature key={index} {...feature} />
         ))}
@@ -138,8 +133,8 @@ function Features() {
 
 function Testimonials() {
   return (
-    <>
-      <h1 className="text-center text-lg font-medium">
+    <div>
+      <h1 className="text-center text-lg font-bold">
         Listen to what students and parents have to say.
       </h1>
       <div className="px-5">
@@ -189,7 +184,7 @@ function Testimonials() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -197,33 +192,36 @@ function CTA() {
   return (
     <div className="card bg-base-100 image-full p-5 shadow-xl">
       <figure>
-        <img
+        {/* <img
           src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
           alt="Shoes"
-        />
+        /> */}
       </figure>
       <div className="card-body text-center">
-        <h1 className="card-title justify-center">What are you waiting for?</h1>
-        <p>
+        <p>What are you waiting for?</p>
+        <h1 className="card-title justify-center">
           Seize the learning opportunity and get matched with your dedicated
           tutor now!
-        </p>
-        <div className="flex pt-5">
+        </h1>
+        <div className="flex py-5">
           <div className="flex-1">
-            100+ <br />
+            <span className="text-xl font-bold">100+</span>
+            <br />
             Offering varous subjects
           </div>
           <div className="flex-1">
-            100,000+ <br />
+            <span className="text-xl font-bold">100,000+</span>
+            <br />
             Elite tutors from Delphis
           </div>
           <div className="flex-1">
-            24 hours <br />
+            <span className="text-xl font-bold">24 hours</span>
+            <br />
             Instant customer service support
           </div>
         </div>
         <div className="card-actions justify-center">
-          <button className="btn btn-primary">Learn more</button>
+          <button className="btn btn-primary px-10">Learn more</button>
         </div>
       </div>
     </div>
