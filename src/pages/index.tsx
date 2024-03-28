@@ -18,7 +18,7 @@ function Hero() {
     <div className="hero">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <img
-          src="https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg"
+          src="https://tutorcircle.sg/_next/image?url=%2Fbanner%2Fbanner_serachGrid_v2.png&w=1920&q=75"
           className="max-w-sm rounded-lg shadow-2xl"
         />
         <div>

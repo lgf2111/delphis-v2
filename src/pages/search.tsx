@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import { FaCaretDown } from "react-icons/fa";
-import { FaCircleDollarToSlot } from "react-icons/fa6";
-import { IoIosCloseCircle } from "react-icons/io";
+import { FaBook, FaCaretDown, FaSchool } from "react-icons/fa";
+import { FaCircleDollarToSlot, FaLocationDot } from "react-icons/fa6";
+import { IoIosCloseCircle, IoMdTime } from "react-icons/io";
 import { MdLocationOn } from "react-icons/md";
 
 export default function Search() {
@@ -210,17 +210,104 @@ function Filters() {
 }
 
 function Tutors() {
-  function TutorCard() {
+  interface TutorProps {
+    imageUrl: string;
+    profile: {
+      name: string;
+      subjects: string[];
+    };
+    intro: {
+      certification: string;
+      school: string;
+      course: string;
+      years: number;
+    };
+    timetable: Record<string, never>;
+    location: string;
+    price: number;
+  }
+
+  interface TutorCardProps extends TutorProps {
+    id: number;
+  }
+
+  const tutors: TutorProps[] = [
+    {
+      imageUrl:
+        "https://tutorcircle.sg/_next/image?url=https%3A%2F%2Ftutorcircle.sg%2Fold%2Ftutor_icon%2F471_tutor_icon.jpeg&w=1200&q=75",
+      profile: {
+        name: "Cayla",
+        subjects: [],
+      },
+      intro: {
+        certification: "High Dip",
+        school: "SOMA",
+        course: "Music Production and Engineering",
+        years: 0,
+      },
+      timetable: {},
+      location: "Singapore",
+      price: 10,
+    },
+    {
+      imageUrl:
+        "https://tutorcircle.sg/_next/image?url=https%3A%2F%2Ftutorcircle.sg%2Fold%2Ftutor_icon%2F468_tutor_icon.jpeg&w=1200&q=75",
+      profile: {
+        name: "Gabriel",
+        subjects: ["General Paper", "Maths", "Physics"],
+      },
+      intro: {
+        certification: "Degree",
+        school: "NUS",
+        course: "Computer Science",
+        years: 0,
+      },
+      timetable: {},
+      location: "Singapore",
+      price: 10,
+    },
+    {
+      imageUrl:
+        "https://tutorcircle.sg/_next/image?url=https%3A%2F%2Ftutorcircle.sg%2Fold%2Ftutor_icon%2F450_tutor_icon.jpeg&w=1200&q=75",
+      profile: {
+        name: "Isaac",
+        subjects: ["English", "Chinese", "Elementary Maths"],
+      },
+      intro: {
+        certification: "Degree",
+        school: "SUSS",
+        course: "Marketing",
+        years: 0,
+      },
+      timetable: {},
+      location: "Singapore",
+      price: 10,
+    },
+  ];
+
+  function TutorCard({
+    id,
+    imageUrl,
+    profile,
+    intro,
+    timetable,
+    location,
+    price,
+  }: TutorCardProps) {
     const [tab, setTab] = useState("Profile");
     return (
-      <div className="card bg-base-100 shadow-xl">
+      <div className="card bg-base-100 relative shadow-xl">
+        <div className="absolute rounded-none rounded-ss-2xl bg-black px-2 py-1 text-white">
+          Tutor {id}
+        </div>
         <figure>
           <img
-            src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-            alt="Shoes"
+            src={imageUrl}
+            alt={profile.name}
+            className="h-96 w-full rounded-t-2xl object-cover"
           />
         </figure>
-        <div className="card-body overflow-hidden">
+        <div className="card-body">
           <div role="tablist" className="tabs tabs-bordered">
             <button
               role="tab"
@@ -244,32 +331,66 @@ function Tutors() {
               Timetable
             </button>
           </div>
-          <h2 className="card-title">Gabriel</h2>
-          {tab === "Profile" && <p>General Paper, Maths, Physics</p>}
-          {tab === "Intro" && <p>Degree in NUS</p>}
+          <h2 className="card-title">{profile.name}</h2>
+          {tab === "Profile" && (
+            <>
+              <p>{profile.subjects.join(", ")}</p>
+              <div className="flex pt-5">
+                <div className="flex-1">
+                  <div className="flex gap-1">
+                    <FaLocationDot />
+                    <span>
+                      {location}
+                      <br />
+                      Location
+                    </span>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex gap-1">
+                    <FaCircleDollarToSlot />
+                    <span>
+                      SGD ${price} Up
+                      <br />
+                      /hour
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+          {tab === "Intro" && (
+            <>
+              <div className="grid grid-cols-2 grid-rows-2 pt-5">
+                <div className="">
+                  <div className="flex gap-1">
+                    <FaLocationDot />
+                    <span>{intro.certification}</span>
+                  </div>
+                </div>
+                <div className="">
+                  <div className="flex gap-1">
+                    <FaSchool />
+                    <span>{intro.school}</span>
+                  </div>
+                </div>
+                <div className="">
+                  <div className="flex gap-1">
+                    <IoMdTime />
+                    <span>{intro.years}</span>
+                  </div>
+                </div>
+                <div className="">
+                  <div className="flex gap-1">
+                    {/* FIXME: size of FaBook not adjustable */}
+                    <FaBook />
+                    <span className="truncate">{intro.course}</span>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
           {tab === "Timetable" && <p>...</p>}
-          <div className="flex pt-5">
-            <div className="flex-1">
-              <div className="flex gap-1">
-                <MdLocationOn />
-                <span>
-                  -
-                  <br />
-                  Location
-                </span>
-              </div>
-            </div>
-            <div className="flex-1">
-              <div className="flex gap-1">
-                <FaCircleDollarToSlot />
-                <span>
-                  SGD $10 Up
-                  <br />
-                  /hour
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     );
@@ -279,14 +400,14 @@ function Tutors() {
       <div className="mb-5 text-center">
         <h1 className="text-lg font-bold">Find the best tutor for you</h1>
         <small>
-          <span className="text-primary font-semibold">4</span> Tutors
+          <span className="text-primary font-semibold">{tutors.length}</span>{" "}
+          Tutors
         </small>
       </div>
       <div className="grid grid-cols-1 gap-3 px-24 md:grid-cols-2 lg:grid-cols-3">
-        <TutorCard />
-        <TutorCard />
-        <TutorCard />
-        <TutorCard />
+        {tutors.map((tutor, index) => (
+          <TutorCard key={index} id={index} {...tutor} />
+        ))}
       </div>
     </div>
   );

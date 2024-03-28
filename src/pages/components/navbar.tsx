@@ -35,7 +35,7 @@ export default function Navbar() {
           </ul>
         </div>
         <Link className="btn btn-ghost text-xl" href="/">
-          Delphis
+          <img src="/Delphis-Full.png" alt="Delphis Icon" className="h-10" />
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
