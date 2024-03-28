@@ -5,17 +5,22 @@ import { IoIosCloseCircle, IoMdTime } from "react-icons/io";
 import { MdLocationOn } from "react-icons/md";
 
 export default function Search() {
+  const [filters, setFilters] = useState<string[]>([]);
+
   return (
     <div className="flex flex-col gap-5 py-10">
-      <Filters />
-      <Tutors />
+      <Filters filters={filters} setFilters={setFilters} />
+      <Tutors filters={filters} />
     </div>
   );
 }
 
-function Filters() {
-  const [filters, setFilters] = useState<string[]>([]);
+interface FitlersProps {
+  filters: string[];
+  setFilters: React.Dispatch<React.SetStateAction<string[]>>;
+}
 
+function Filters({ filters, setFilters }: FitlersProps) {
   const handleClick = (newFilter: string) => {
     if (!filters.includes(newFilter)) {
       setFilters([...filters, newFilter]);
@@ -209,7 +214,7 @@ function Filters() {
   );
 }
 
-function Tutors() {
+function Tutors({ filters }: { filters: string[] }) {
   interface TutorProps {
     imageUrl: string;
     profile: {
@@ -395,6 +400,20 @@ function Tutors() {
       </div>
     );
   }
+
+  console.log(filters);
+  function TutorCards() {
+    let filteredTutors = [...tutors];
+    if (filters.length > 0) {
+      filteredTutors = tutors.filter((tutor) =>
+        tutor.profile.subjects.some((subject) => filters.includes(subject)),
+      );
+    }
+    return filteredTutors.map((tutor, index) => (
+      <TutorCard key={index} id={index} {...tutor} />
+    ));
+  }
+
   return (
     <div className="">
       <div className="mb-5 text-center">
@@ -405,9 +424,7 @@ function Tutors() {
         </small>
       </div>
       <div className="grid grid-cols-1 gap-3 px-24 md:grid-cols-2 lg:grid-cols-3">
-        {tutors.map((tutor, index) => (
-          <TutorCard key={index} id={index} {...tutor} />
-        ))}
+        <TutorCards />
       </div>
     </div>
   );
