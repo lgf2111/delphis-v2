@@ -16,11 +16,7 @@ export default function Home() {
 function Hero() {
   return (
     <div className="hero">
-      <div className="hero-content flex-col lg:flex-row-reverse">
-        <img
-          src="https://tutorcircle.sg/_next/image?url=%2Fbanner%2Fbanner_serachGrid_v2.png&w=1920&q=75"
-          className="max-w-sm rounded-lg shadow-2xl"
-        />
+      <div className="hero-content flex-col lg:flex-row">
         <div>
           <h1 className="text-5xl font-bold">Find your desired tutors here</h1>
           <ul className="list-inside list-disc py-6">
@@ -34,6 +30,10 @@ function Hero() {
           </ul>
           <button className="btn btn-primary px-10">Learn more</button>
         </div>
+        <img
+          src="https://tutorcircle.sg/_next/image?url=%2Fbanner%2Fbanner_serachGrid_v2.png&w=1920&q=75"
+          className="max-w-sm rounded-lg shadow-2xl"
+        />
       </div>
     </div>
   );
@@ -96,7 +96,7 @@ function Features() {
   const Feature = ({ Icon, title, description }: FeatureProps) => {
     return (
       <div className="flex flex-1 flex-col flex-wrap items-center px-3 text-center">
-        <Icon className="bg-primary rounded-xl p-1 text-white" size={50} />
+        <Icon className="rounded-xl bg-primary p-1 text-white" size={50} />
         <h1 className="text-lg font-bold">{title}</h1>
         <p className="">{description}</p>
       </div>
@@ -139,7 +139,7 @@ function Testimonials() {
       </h1>
       <div className="px-5">
         <div className="chat chat-start">
-          <div className="chat-image avatar">
+          <div className="avatar chat-image">
             <div className="w-10 rounded-full">
               <img
                 alt="Tailwind CSS chat bubble component"
@@ -154,7 +154,7 @@ function Testimonials() {
           </div>
         </div>
         <div className="chat chat-end">
-          <div className="chat-image avatar">
+          <div className="avatar chat-image">
             <div className="w-10 rounded-full">
               <img
                 alt="Tailwind CSS chat bubble component"
@@ -169,7 +169,7 @@ function Testimonials() {
           </div>
         </div>
         <div className="chat chat-start">
-          <div className="chat-image avatar">
+          <div className="avatar chat-image">
             <div className="w-10 rounded-full">
               <img
                 alt="Tailwind CSS chat bubble component"
@@ -190,7 +190,7 @@ function Testimonials() {
 
 function CTA() {
   return (
-    <div className="card bg-base-100 image-full p-5 shadow-xl">
+    <div className="card image-full bg-base-100 p-5 shadow-xl">
       <figure>
         {/* <img
           src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"

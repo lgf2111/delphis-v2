@@ -19,3 +19,20 @@ model Post {
 
     @@index([name])
 }
+
+model Tutor {
+    id          Int    @id @default(autoincrement())
+    name        String
+    imageUrl    String
+    achievement String
+    course      String
+    school      String
+    experience  Int
+    location    String
+    price       Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([name])
+}
