@@ -16,7 +16,7 @@ export const tutorRouter = createTRPCRouter({
     }),
 
     getById: publicProcedure.input(z.object({ id: z.number() })).query(({ ctx, input }) => {
-        return ctx.db.tutor.findFirst({ where: { id: input.id } });
+        return ctx.db.tutor.findFirst({ where: { id: input.id }, include: { subjects: true } });
     })
 
     // create: publicProcedure

@@ -1,8 +1,12 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { FaBook, FaSchool } from "react-icons/fa6";
+import { FaBook, FaLocationDot, FaSchool } from "react-icons/fa6";
 import { IoMdTime } from "react-icons/io";
+import { MdCategory } from "react-icons/md";
 import { RouterOutputs, api } from "~/utils/api";
+import { formatDistance, subDays } from "date-fns";
+import { FaCertificate } from "react-icons/fa";
+import { GrCertificate } from "react-icons/gr";
 
 // interface TutorDetails {
 //   id: string;
@@ -82,61 +86,94 @@ function Profile(props: DetailProps) {
     id,
     name,
     imageUrl,
-    achievement,
+    category,
     course,
+    achievement,
+    location,
     school,
     experience,
-    location,
     price,
+    introduction,
     createdAt,
     updatedAt,
+    subjects,
   } = props;
   return (
-    <div className="bg-white">
-      <div className="avatar">
-        <div className="w-24 rounded">
-          <img src={imageUrl} />
+    <div className="flex flex-col gap-6 bg-white p-12">
+      <div className="flex gap-10">
+        <div className="avatar">
+          <div className="w-64 rounded">
+            <img src={imageUrl} />
+          </div>
+        </div>
+        <div className="flex flex-col gap-3">
+          <p className="text-2xl font-bold">{name}</p>
+          <div className="flex flex-col">
+            <p className="flex items-baseline gap-1">
+              <MdCategory />
+              <span>{category}</span>
+            </p>
+            <p className="flex items-baseline gap-1">
+              <FaLocationDot />
+              <span>{location}</span>
+            </p>
+            <p className="flex items-baseline gap-1">
+              <FaSchool />
+              <span>{school}</span>
+            </p>
+            <p className="flex items-baseline gap-1">
+              <GrCertificate />
+              <span className="truncate">{achievement}</span>
+            </p>
+            <p className="flex items-baseline gap-1">
+              <FaBook />
+              <span className="truncate">{course}</span>
+            </p>
+            <p className="flex items-baseline gap-1">
+              <IoMdTime />
+              <span>{experience}</span>
+            </p>
+          </div>
+          <p>
+            From{" "}
+            <span className="text-2xl font-medium text-primary">${price}</span>{" "}
+            per hour
+          </p>
+          <small>
+            Updated{" "}
+            {formatDistance(subDays(updatedAt, 3), new Date(), {
+              addSuffix: true,
+            })}
+            , joined{" "}
+            {formatDistance(subDays(createdAt, 3), new Date(), {
+              addSuffix: true,
+            })}
+          </small>
         </div>
       </div>
-      <div className="text-2xl font-bold">{name}</div>
-      <div className="flex flex-col">
-        <div className="flex gap-1">
-          <FaSchool />
-          <span>{school}</span>
-        </div>
-        <div className="flex gap-1">
-          {/* FIXME: size of FaBook not adjustable */}
-          <FaBook />
-          <span className="truncate">{course}</span>
-        </div>
-        <div className="flex gap-1">
-          <IoMdTime />
-          <span>{experience}</span>
-        </div>
-      </div>
-      ${price}/hour
-      <div className="min-h-16">
+
+      <div className="">
         <h1 className="text-lg font-bold">Introduction</h1>
-        {/* <p>{tutorDetails.introduction}</p> */}
+        {introduction ?? "This tutor has yet to provide an introduction."}
       </div>
-      <h1 className="text-lg font-bold">Examination</h1>
+      <h1 className="text-lg font-bold">Teaching Subjects</h1>
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
             <tr>
               <th>Subject</th>
-              <th>Examination</th>
-              <th>Level Color</th>
+              <th>Grade</th>
+              <th>Rate ($/h)</th>
             </tr>
           </thead>
           <tbody>
-            {/* {tutorDetails.examination.map((exam, index) => (
+            {subjects.map((subject, index) => (
               <tr key={index}>
-                <td>{exam.subject}</td>
-                <td>{exam.examination}</td>
-                <td>{exam.level}</td>
+                <td>{subject.name}</td>
+                <td>{subject.grade}</td>
+                <td>{subject.rate}</td>
               </tr>
-            ))} */}
+            ))}
           </tbody>
         </table>
       </div>

@@ -20,12 +20,8 @@ function Hero() {
         <div>
           <h1 className="text-5xl font-bold">Find your desired tutors here</h1>
           <ul className="list-inside list-disc py-6">
-            <li>
-              Take customisable 1-on-1 lessons trusted by millions of users
-            </li>
-            <li>
-              Learn from certified teachers that fit your budget and schedule
-            </li>
+            <li>Take customisable 1-on-1 lessons trusted by many users</li>
+            <li>Learn from tutors that fit your budget and schedule</li>
             <li>Wide variety of tutors and subject for you to choose from</li>
           </ul>
           <button className="btn btn-primary px-10">Learn more</button>
@@ -191,12 +187,7 @@ function Testimonials() {
 function CTA() {
   return (
     <div className="card image-full bg-base-100 p-5 shadow-xl">
-      <figure>
-        {/* <img
-          src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-          alt="Shoes"
-        /> */}
-      </figure>
+      <figure></figure>
       <div className="card-body text-center">
         <p>What are you waiting for?</p>
         <h1 className="card-title justify-center">
@@ -205,19 +196,19 @@ function CTA() {
         </h1>
         <div className="flex py-5">
           <div className="flex-1">
-            <span className="text-xl font-bold">100+</span>
+            <span className="text-xl font-bold">10+</span>
             <br />
             Offering varous subjects
           </div>
           <div className="flex-1">
-            <span className="text-xl font-bold">100,000+</span>
+            <span className="text-xl font-bold">20+</span>
             <br />
-            Elite tutors from Delphis
+            Tutors from Delphis
           </div>
           <div className="flex-1">
             <span className="text-xl font-bold">24 hours</span>
             <br />
-            Instant customer service support
+            Customer service support
           </div>
         </div>
         <div className="card-actions justify-center">
