@@ -6,7 +6,7 @@ import { IoIosCloseCircle, IoMdTime } from "react-icons/io";
 import { RouterOutputs, api } from "~/utils/api";
 import Spinner from "./components/spinner";
 import { GrCertificate } from "react-icons/gr";
-import { Statistic } from "./components/statistic";
+import Statistic from "./components/statistic";
 import { MdSubject } from "react-icons/md";
 
 export default function Search() {
@@ -275,18 +275,18 @@ function Tutors({ filters }: { filters: string[] }) {
               <Statistic
                 className="col-span-2"
                 tip={`Teaching subjects: ${subjects_}`}
-                icon={MdSubject}
+                icon={<MdSubject />}
                 value={subjects_}
               />
               <Statistic
                 tip={`Location: ${location}`}
-                icon={FaLocationDot}
+                icon={<FaLocationDot />}
                 value={location}
               />
 
               <Statistic
                 tip={`Rate: Starting from $${price}/hour`}
-                icon={FaCircleDollarToSlot}
+                icon={<FaCircleDollarToSlot />}
                 value={`$${price}/hour up`}
               />
             </div>
@@ -295,22 +295,22 @@ function Tutors({ filters }: { filters: string[] }) {
             <div className="grid grid-cols-2 grid-rows-2 pt-5">
               <Statistic
                 tip={`Achievement: ${achievement}`}
-                icon={GrCertificate}
+                icon={<GrCertificate />}
                 value={achievement}
               />
               <Statistic
                 tip={`School: ${school}`}
-                icon={FaSchool}
+                icon={<FaSchool />}
                 value={school}
               />
               <Statistic
                 tip={`Experience: ${experience}`}
-                icon={IoMdTime}
+                icon={<IoMdTime />}
                 value={experience}
               />
               <Statistic
                 tip={`Course: ${course}`}
-                icon={FaBook}
+                icon={<FaBook />}
                 value={course}
               />
             </div>

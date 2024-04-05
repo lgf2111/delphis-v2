@@ -7,7 +7,7 @@ import { type RouterOutputs, api } from "~/utils/api";
 import { formatDistance, subDays } from "date-fns";
 import { GrCertificate } from "react-icons/gr";
 import Spinner from "~/pages/components/spinner";
-import { Statistic } from "~/pages/components/statistic";
+import Statistic from "~/pages/components/statistic";
 
 export default function TutorProfile() {
   const router = useRouter();
@@ -72,28 +72,32 @@ function Profile(props: DetailProps) {
           <div className="flex flex-col">
             <Statistic
               tip={`Category: ${category}`}
-              icon={MdCategory}
+              icon={<MdCategory />}
               value={category}
             />
             <Statistic
               tip={`Location: ${location}`}
-              icon={FaLocationDot}
+              icon={<FaLocationDot />}
               value={location}
             />
             <Statistic
               tip={`School: ${school}`}
-              icon={FaSchool}
+              icon={<FaSchool />}
               value={school}
             />
             <Statistic
               tip={`Achievement: ${achievement}`}
-              icon={GrCertificate}
+              icon={<GrCertificate />}
               value={achievement}
             />
-            <Statistic tip={`Course: ${course}`} icon={FaBook} value={course} />
+            <Statistic
+              tip={`Course: ${course}`}
+              icon={<FaBook />}
+              value={course}
+            />
             <Statistic
               tip={`Experience: ${experience} years`}
-              icon={IoMdTime}
+              icon={<IoMdTime />}
               value={`${experience} years`}
             />
           </div>
@@ -143,35 +147,3 @@ function Profile(props: DetailProps) {
     </div>
   );
 }
-
-// function Tuition(props: DetailProps) {
-//   const [tuition, setTuition] = useState(tutorDetails.tuition[0]);
-//   const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-//     const selectedSubject = event.target.value;
-//     const selectedTuition = tutorDetails.tuition.find(
-//       (tuition) => tuition.subject === selectedSubject,
-//     );
-//     setTuition(selectedTuition);
-//   };
-
-//   return (
-//     <div className="bg-white">
-//       <h1 className="text-2xl font-bold">{tuition?.subject}</h1>
-//       Hourly Rate ${tuition?.rate} <br />
-//       Tutorial Format
-//       <hr />
-//       <h1 className="text-xl">Book</h1>
-//       <h2 className="text-lg">Subject</h2>
-//       <select onChange={handleSubjectChange}>
-//         {tutorDetails.tuition.map((service, index) => (
-//           <option key={index}>{service.subject}</option>
-//         ))}
-//       </select>
-//       <h2 className="text-lg">Expected Fee</h2>
-//       <p>
-//         The actual tutorial fees may vary depending on the student grade and
-//         transportation in different regions.
-//       </p>
-//     </div>
-//   );
-// }

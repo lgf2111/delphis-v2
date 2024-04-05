@@ -1,19 +1,18 @@
 import React from "react";
-import { type IconType } from "react-icons";
 
 interface StatisticProps {
   tip: string;
-  icon: IconType;
+  icon: React.JSX.Element;
   value: string | number;
   className?: string;
 }
 
-export function Statistic(props: StatisticProps) {
-  const { tip, icon: Icon, value, className } = props;
+export default function Statistic(props: StatisticProps) {
+  const { tip, icon, value, className } = props;
   return (
-    <div className={`flex items-baseline gap-1 ${className}`}>
+    <div className={`flex items-baseline gap-1 ${className ?? ""}`}>
       <span className="tooltip tooltip-right" data-tip={tip}>
-        <Icon />
+        {icon}
       </span>
       <span className="truncate">{value}</span>
     </div>
