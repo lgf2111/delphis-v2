@@ -11,6 +11,7 @@ import Statistic from "~/pages/components/statistic";
 
 export default function TutorProfile() {
   const router = useRouter();
+  // TODO: consider using useParam instead
   const { id } = router.query;
 
   if (typeof id !== "string") {
