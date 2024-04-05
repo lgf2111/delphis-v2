@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useRef } from "react";
+import React from "react";
 import { FaBook, FaLocationDot, FaSchool } from "react-icons/fa6";
 import { IoMdTime } from "react-icons/io";
 import { MdCategory } from "react-icons/md";
@@ -56,12 +56,14 @@ function Profile(props: DetailProps) {
     location,
     school,
     experience,
-    price,
     introduction,
     createdAt,
     updatedAt,
     subjects,
   } = props;
+
+  const minRate = Math.min(...subjects.map((subject) => subject.rate));
+
   return (
     <div className="flex flex-col gap-6 bg-white p-12">
       <div className="flex flex-col gap-10 md:flex-row">
@@ -71,7 +73,10 @@ function Profile(props: DetailProps) {
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <p className="text-2xl font-bold">{name}</p>
+          <p className="text-2xl">
+            <b>{name}</b>
+            <small className="ms-1 text-sm">(Tutor {id})</small>
+          </p>
           <div className="flex flex-col">
             <Statistic
               tip={`Category: ${category}`}
@@ -106,7 +111,9 @@ function Profile(props: DetailProps) {
           </div>
           <p>
             Starting from{" "}
-            <span className="text-2xl font-medium text-primary">${price}</span>
+            <span className="text-2xl font-medium text-primary">
+              ${minRate}
+            </span>
             /hour
           </p>
           <small>
@@ -140,7 +147,10 @@ function Profile(props: DetailProps) {
           <tbody>
             {subjects.map((subject, index) => {
               const message = encodeURI(
-                `Hi Delphis, I would like to request for tutor ${name} (ID:${id}) to teach ${subject.name}.`,
+                `Delphis Tutor Request Form\n` +
+                  `Tutor: ${name} (Tutor ${id})\n` +
+                  `Subject: ${subject.name}\n` +
+                  `Education Level: ${subject.grade}`,
               );
               return (
                 <tr key={index}>
@@ -151,7 +161,7 @@ function Profile(props: DetailProps) {
                     <a
                       href={`https://wa.me/6588128123?text=${message}`}
                       target="_blank"
-                      className=" btn btn-success btn-sm text-white"
+                      className="btn btn-success btn-sm text-white"
                     >
                       <BsWhatsapp />
                       Request

@@ -228,11 +228,12 @@ function Tutors({ filters }: { filters: string[] }) {
       school,
       experience,
       location,
-      price,
       subjects,
     } = props;
     const [tab, setTab] = useState("Profile");
     const subjects_ = subjects.map((subject) => subject.name).join(", ");
+    const minRate = Math.min(...subjects.map((subject) => subject.rate));
+
     return (
       <div className="card relative bg-base-100 shadow-xl">
         <div className="absolute rounded-none rounded-ss-2xl bg-black/50 px-2 py-1 text-white">
@@ -277,9 +278,9 @@ function Tutors({ filters }: { filters: string[] }) {
               />
 
               <Statistic
-                tip={`Rate: Starting from $${price}/hour`}
+                tip={`Rate: Starting from $${minRate}/hour`}
                 icon={<FaCircleDollarToSlot />}
-                value={`$${price}/hour up`}
+                value={`$${minRate}/hour up`}
               />
             </div>
           )}

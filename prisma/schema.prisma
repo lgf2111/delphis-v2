@@ -30,7 +30,6 @@ model Tutor {
     course       String
     experience   Int
     location     String
-    price        Int
     introduction String
 
     createdAt DateTime @default(now())
