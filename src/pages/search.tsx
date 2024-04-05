@@ -8,6 +8,7 @@ import Spinner from "./components/spinner";
 import { GrCertificate } from "react-icons/gr";
 import Statistic from "./components/statistic";
 import { MdSubject } from "react-icons/md";
+import Modal from "./components/modal";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);
@@ -56,7 +57,6 @@ function Filters(props: FitlersProps) {
   }
 
   function Subject() {
-    const modalRef = useRef<HTMLDialogElement | null>(null);
     const subjects = [
       {
         title: "O & N Level",
@@ -106,21 +106,13 @@ function Filters(props: FitlersProps) {
     ];
 
     return (
-      <>
-        <button className="btn" onClick={() => modalRef.current?.showModal()}>
-          Subject <FaCaretDown />
-        </button>
-        <dialog ref={modalRef} className="modal">
-          <div className="modal-box flex flex-col gap-5">
-            {subjects.map((subject, index) => (
-              <Card filter={subject} key={index} />
-            ))}
-          </div>
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
-      </>
+      <Modal buttonText="Subject">
+        <div className="flex flex-col gap-5">
+          {subjects.map((subject, index) => (
+            <Card filter={subject} key={index} />
+          ))}
+        </div>
+      </Modal>
     );
   }
   // TODO: update location button

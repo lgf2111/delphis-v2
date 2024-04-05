@@ -4,20 +4,20 @@ import { MdEmail } from "react-icons/md";
 
 export default function Footer() {
   return (
-    <footer className="footer bg-base-200 text-base-content p-10">
+    <footer className="footer bg-base-200 p-10 text-base-content">
       <aside>
         <img src="/Delphis-Full.png" alt="Delphis Icon" className="h-10" />
         <p>
           <a
             href="mailto:jeff.lee@delphistech.com"
-            className="flex items-center gap-1"
+            className="link-hover link flex items-center gap-1"
           >
             <MdEmail /> Email: jeff.lee@delphistech.com
           </a>
           <a
             href="https://api.whatsapp.com/send/?phone=6588128123&text&type=phone_number&app_absent=0"
             target="_blank"
-            className="flex items-center gap-1"
+            className="link-hover link flex items-center gap-1"
           >
             <FaWhatsapp /> Whatsapp: +65 8812 8123
           </a>
@@ -26,17 +26,29 @@ export default function Footer() {
       </aside>
       <nav>
         <h6 className="footer-title">Enquiries</h6>
-        <a className="link link-hover">FAQ (Tutor)</a>
-        <a className="link link-hover">FAQ (Student)</a>
+        <a
+          className="link-hover link"
+          href="https://docs.google.com/document/d/1LU9kvJnY_ErwBlbB96az-21lYwQCPu5OonXNaXOij78/edit?usp=sharing"
+          target="_blank"
+        >
+          FAQ (Tutor)
+        </a>
+        <a
+          className="link-hover link"
+          href="https://docs.google.com/document/d/1XWLKzH327W9giLrnQbecroyeTXxGpfq1RqWfgtKM32E/edit?usp=sharing"
+          target="_blank"
+        >
+          FAQ (Student)
+        </a>
       </nav>
       <nav>
         <h6 className="footer-title">Company</h6>
-        <a className="link link-hover">About Delphis</a>
+        <a className="link-hover link">About Delphis</a>
       </nav>
       <nav>
         <h6 className="footer-title">Others</h6>
-        <a className="link link-hover">Tutors Join Telegram</a>
-        <a className="link link-hover">Follow Latest Assignment</a>
+        <a className="link-hover link">Tutors Join Telegram</a>
+        <a className="link-hover link">Follow Latest Assignment</a>
       </nav>
     </footer>
   );
