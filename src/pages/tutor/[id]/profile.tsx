@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useRef } from "react";
 import { FaBook, FaLocationDot, FaSchool } from "react-icons/fa6";
 import { IoMdTime } from "react-icons/io";
 import { MdCategory } from "react-icons/md";
@@ -8,6 +8,7 @@ import { formatDistance, subDays } from "date-fns";
 import { GrCertificate } from "react-icons/gr";
 import Spinner from "~/pages/components/spinner";
 import Statistic from "~/pages/components/statistic";
+import Modal from "~/pages/components/modal";
 
 export default function TutorProfile() {
   const router = useRouter();
@@ -46,6 +47,7 @@ function Profile(props: DetailProps) {
     return <Spinner />;
   }
   const {
+    id,
     name,
     imageUrl,
     category,
@@ -130,18 +132,55 @@ function Profile(props: DetailProps) {
           <thead>
             <tr>
               <th>Subject</th>
-              <th>Grade</th>
+              <th>Education Level</th>
               <th>Rate ($/h)</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            {subjects.map((subject, index) => (
-              <tr key={index}>
-                <td>{subject.name}</td>
-                <td>{subject.grade}</td>
-                <td>{subject.rate}</td>
-              </tr>
-            ))}
+            {subjects.map((subject, index) => {
+              const message = `Hi Delphis, I would like to request for tutor ${name} (ID:${id}) to teach ${subject.name}.`;
+              return (
+                <tr key={index}>
+                  <td>{subject.name}</td>
+                  <td>{subject.grade}</td>
+                  <td>{subject.rate}</td>
+                  <td>
+                    <Modal
+                      buttonText="Request"
+                      buttonClassName="btn-sm btn-primary"
+                    >
+                      <h3 className="text-lg font-bold">
+                        Request for tutor{" "}
+                        <span className="text-primary">{name}</span>
+                        {" for "}
+                        <span className="text-primary">{subject.name}</span>
+                      </h3>
+                      <div className="flex flex-row gap-1 py-4">
+                        <a
+                          href={`https://wa.me/6588128123?text=${encodeURI(message)}`}
+                          target="_blank"
+                        >
+                          <img
+                            alt="Whatsapp Button"
+                            src="https://img.shields.io/badge/whatsapp-grey?style=for-the-badge&logo=whatsapp"
+                          />
+                        </a>
+                        <a
+                          href={`tg://msg?text=${encodeURI(message)}&to=lgf2111`}
+                          target="_blank"
+                        >
+                          <img
+                            alt="Telegram Button"
+                            src="https://img.shields.io/badge/telegram-blue?style=for-the-badge&logo=telegram"
+                          />
+                        </a>
+                      </div>
+                    </Modal>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
