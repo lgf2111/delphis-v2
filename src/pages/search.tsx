@@ -6,7 +6,7 @@ import { IoIosCloseCircle, IoMdTime } from "react-icons/io";
 import { RouterOutputs, api } from "~/utils/api";
 import Spinner from "./components/spinner";
 import { GrCertificate } from "react-icons/gr";
-import Statistic from "./components/statistic";
+import { Statistic } from "./components/statistic";
 import { MdSubject } from "react-icons/md";
 
 export default function Search() {
@@ -274,7 +274,7 @@ function Tutors({ filters }: { filters: string[] }) {
             <div className="grid grid-cols-2 grid-rows-2 pt-5">
               <Statistic
                 className="col-span-2"
-                tip={`Subjects: ${subjects_}`}
+                tip={`Teaching subjects: ${subjects_}`}
                 icon={MdSubject}
                 value={subjects_}
               />

@@ -8,7 +8,7 @@ interface StatisticProps {
   className?: string;
 }
 
-export default function Statistic(props: StatisticProps) {
+export function Statistic(props: StatisticProps) {
   const { tip, icon: Icon, value, className } = props;
   return (
     <div className={`flex items-baseline gap-1 ${className}`}>

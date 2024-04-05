@@ -7,6 +7,7 @@ import { type RouterOutputs, api } from "~/utils/api";
 import { formatDistance, subDays } from "date-fns";
 import { GrCertificate } from "react-icons/gr";
 import Spinner from "~/pages/components/spinner";
+import { Statistic } from "~/pages/components/statistic";
 
 export default function TutorProfile() {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function TutorProfile() {
 
   if (!details) {
     // TODO: this will happen if cannot conenct to db, or no internet
-    return <div>invalid details</div>;
+    return <Spinner />;
   }
 
   return (
@@ -69,60 +70,32 @@ function Profile(props: DetailProps) {
         <div className="flex flex-col gap-3">
           <p className="text-2xl font-bold">{name}</p>
           <div className="flex flex-col">
-            <div className="flex items-baseline gap-1">
-              <span
-                className="tooltip tooltip-right"
-                data-tip={`Category: ${category}`}
-              >
-                <MdCategory />
-              </span>
-              <span>{category}</span>
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span
-                className="tooltip tooltip-right"
-                data-tip={`Location: ${location}`}
-              >
-                <FaLocationDot />
-              </span>
-              <span>{location}</span>
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span
-                className="tooltip tooltip-right"
-                data-tip={`School: ${school}`}
-              >
-                <FaSchool />
-              </span>
-              <span>{school}</span>
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span
-                className="tooltip tooltip-right"
-                data-tip={`Achievement: ${achievement}`}
-              >
-                <GrCertificate />
-              </span>
-              <span className="truncate">{achievement}</span>
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span
-                className="tooltip tooltip-right"
-                data-tip={`Course: ${course}`}
-              >
-                <FaBook />
-              </span>
-              <span className="truncate">{course}</span>
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span
-                className="tooltip tooltip-right"
-                data-tip={`Experience: ${experience} years`}
-              >
-                <IoMdTime />
-              </span>
-              <span>{experience} years</span>
-            </div>
+            <Statistic
+              tip={`Category: ${category}`}
+              icon={MdCategory}
+              value={category}
+            />
+            <Statistic
+              tip={`Location: ${location}`}
+              icon={FaLocationDot}
+              value={location}
+            />
+            <Statistic
+              tip={`School: ${school}`}
+              icon={FaSchool}
+              value={school}
+            />
+            <Statistic
+              tip={`Achievement: ${achievement}`}
+              icon={GrCertificate}
+              value={achievement}
+            />
+            <Statistic tip={`Course: ${course}`} icon={FaBook} value={course} />
+            <Statistic
+              tip={`Experience: ${experience} years`}
+              icon={IoMdTime}
+              value={`${experience} years`}
+            />
           </div>
           <p>
             Starting from{" "}
