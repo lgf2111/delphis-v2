@@ -26,10 +26,7 @@ function Hero() {
           </ul>
           <button className="btn btn-primary px-10">Learn more</button>
         </div>
-        <img
-          src="https://tutorcircle.sg/_next/image?url=%2Fbanner%2Fbanner_serachGrid_v2.png&w=1920&q=75"
-          className="max-w-sm rounded-lg shadow-2xl"
-        />
+        <img src="/Landing.png" className="max-w-sm rounded-lg" />
       </div>
     </div>
   );
