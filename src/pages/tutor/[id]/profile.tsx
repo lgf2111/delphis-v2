@@ -1,66 +1,30 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import { FaBook, FaLocationDot, FaSchool } from "react-icons/fa6";
 import { IoMdTime } from "react-icons/io";
 import { MdCategory } from "react-icons/md";
-import { RouterOutputs, api } from "~/utils/api";
+import { type RouterOutputs, api } from "~/utils/api";
 import { formatDistance, subDays } from "date-fns";
-import { FaCertificate } from "react-icons/fa";
 import { GrCertificate } from "react-icons/gr";
-
-// interface TutorDetails {
-//   id: string;
-//   imageUrl: string;
-//   name: string;
-//   school: string;
-//   course: string;
-//   years: number;
-//   price: number;
-//   introduction: string;
-//   examination: { subject: string; examination: string; level: number }[];
-//   highSchool: string;
-//   location: string;
-//   timetable: Record<string, never>;
-//   tuition: { subject: string; rate: number }[];
-// }
+import Spinner from "~/pages/components/spinner";
 
 export default function TutorProfile() {
   const router = useRouter();
   const { id } = router.query;
-  if (!id) {
-    return <div>loading...</div>;
-  }
+
   if (typeof id !== "string") {
-    return <div>invalid id</div>;
+    return <div>Invalid Id (Not a string)</div>;
   }
-  // const tutorDetails: TutorDetails = {
-  //   id: id,
-  //   imageUrl:
-  //     "https://tutorcircle.sg/_next/image?url=https%3A%2F%2Ftutorcircle.sg%2Fold%2Ftutor_icon%2F471_tutor_icon.jpeg&w=3840&q=75",
-  //   name: "Cayla",
-  //   school: "SOMA",
-  //   course: "Music Profiction & Engineering",
-  //   years: 0,
-  //   price: 20,
-  //   introduction: "",
-  //   examination: [
-  //     { subject: "English", examination: "PSLE", level: 4 },
-  //     { subject: "Maths", examination: "PSLE", level: 5 },
-  //     { subject: "Malay", examination: "PSLE", level: 2 },
-  //   ],
-  //   highSchool: "CHIG St Joseph's Convent",
-  //   location: "Hougang",
-  //   timetable: {},
-  //   tuition: [
-  //     { subject: "English", rate: 20 },
-  //     { subject: "Maths", rate: 20 },
-  //     { subject: "Malay", rate: 20 },
-  //   ],
-  // };
 
-  const { data: details } = api.tutor.getById.useQuery({ id: parseInt(id) });
+  const id_ = parseInt(id);
 
-  console.log(details);
+  if (isNaN(id_)) {
+    return <div>Invalid Id</div>;
+  }
+
+  const { data: details, isLoading } = api.tutor.getById.useQuery({
+    id: id_,
+  });
 
   if (!details) {
     // TODO: this will happen if cannot conenct to db, or no internet
@@ -69,10 +33,7 @@ export default function TutorProfile() {
 
   return (
     <div className="flex flex-col gap-5 bg-slate-100 px-10 py-5">
-      <Profile {...details} />
-      <Others {...details} />
-      {/* <Timetable {...details} /> */}
-      {/* <Tuition {...details} /> */}
+      {isLoading ? <Spinner /> : <Profile {...details} />}
     </div>
   );
 }
@@ -80,10 +41,9 @@ export default function TutorProfile() {
 type DetailProps = RouterOutputs["tutor"]["getById"];
 function Profile(props: DetailProps) {
   if (!props) {
-    return <div>loading...</div>;
+    return <Spinner />;
   }
   const {
-    id,
     name,
     imageUrl,
     category,
@@ -100,7 +60,7 @@ function Profile(props: DetailProps) {
   } = props;
   return (
     <div className="flex flex-col gap-6 bg-white p-12">
-      <div className="flex gap-10">
+      <div className="flex flex-col gap-10 md:flex-row">
         <div className="avatar">
           <div className="w-64 rounded">
             <img src={imageUrl} />
@@ -109,35 +69,65 @@ function Profile(props: DetailProps) {
         <div className="flex flex-col gap-3">
           <p className="text-2xl font-bold">{name}</p>
           <div className="flex flex-col">
-            <p className="flex items-baseline gap-1">
-              <MdCategory />
+            <div className="flex items-baseline gap-1">
+              <span
+                className="tooltip tooltip-right"
+                data-tip={`Category: ${category}`}
+              >
+                <MdCategory />
+              </span>
               <span>{category}</span>
-            </p>
-            <p className="flex items-baseline gap-1">
-              <FaLocationDot />
+            </div>
+            <div className="flex items-baseline gap-1">
+              <span
+                className="tooltip tooltip-right"
+                data-tip={`Location: ${location}`}
+              >
+                <FaLocationDot />
+              </span>
               <span>{location}</span>
-            </p>
-            <p className="flex items-baseline gap-1">
-              <FaSchool />
+            </div>
+            <div className="flex items-baseline gap-1">
+              <span
+                className="tooltip tooltip-right"
+                data-tip={`School: ${school}`}
+              >
+                <FaSchool />
+              </span>
               <span>{school}</span>
-            </p>
-            <p className="flex items-baseline gap-1">
-              <GrCertificate />
+            </div>
+            <div className="flex items-baseline gap-1">
+              <span
+                className="tooltip tooltip-right"
+                data-tip={`Achievement: ${achievement}`}
+              >
+                <GrCertificate />
+              </span>
               <span className="truncate">{achievement}</span>
-            </p>
-            <p className="flex items-baseline gap-1">
-              <FaBook />
+            </div>
+            <div className="flex items-baseline gap-1">
+              <span
+                className="tooltip tooltip-right"
+                data-tip={`Course: ${course}`}
+              >
+                <FaBook />
+              </span>
               <span className="truncate">{course}</span>
-            </p>
-            <p className="flex items-baseline gap-1">
-              <IoMdTime />
-              <span>{experience}</span>
-            </p>
+            </div>
+            <div className="flex items-baseline gap-1">
+              <span
+                className="tooltip tooltip-right"
+                data-tip={`Experience: ${experience} years`}
+              >
+                <IoMdTime />
+              </span>
+              <span>{experience} years</span>
+            </div>
           </div>
           <p>
-            From{" "}
-            <span className="text-2xl font-medium text-primary">${price}</span>{" "}
-            per hour
+            Starting from{" "}
+            <span className="text-2xl font-medium text-primary">${price}</span>
+            /hour
           </p>
           <small>
             Updated{" "}
@@ -177,29 +167,6 @@ function Profile(props: DetailProps) {
           </tbody>
         </table>
       </div>
-    </div>
-  );
-}
-
-function Others(props: DetailProps) {
-  if (!props) {
-    return <div>loading...</div>;
-  }
-  const { location } = props;
-  return (
-    <div className="bg-white">
-      <h1 className="text-lg font-bold">High School</h1>
-      {/* <p>{tutorDetails.highSchool}</p> */}
-      <h1 className="text-lg font-bold">Living Location</h1>
-      <p>{location}</p>
-    </div>
-  );
-}
-
-function Timetable(props: DetailProps) {
-  return (
-    <div className="bg-white">
-      <h1 className="text-lg font-bold">Available Timeslot</h1>
     </div>
   );
 }

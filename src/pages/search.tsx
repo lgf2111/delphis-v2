@@ -4,6 +4,10 @@ import { FaBook, FaCaretDown, FaSchool } from "react-icons/fa";
 import { FaCircleDollarToSlot, FaLocationDot } from "react-icons/fa6";
 import { IoIosCloseCircle, IoMdTime } from "react-icons/io";
 import { RouterOutputs, api } from "~/utils/api";
+import Spinner from "./components/spinner";
+import { GrCertificate } from "react-icons/gr";
+import Statistic from "./components/statistic";
+import { MdSubject } from "react-icons/md";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);
@@ -219,82 +223,7 @@ function Filters(props: FitlersProps) {
 }
 
 function Tutors({ filters }: { filters: string[] }) {
-  interface TutorProps {
-    imageUrl: string;
-    profile: {
-      name: string;
-      subjects: string[];
-    };
-    intro: {
-      certification: string;
-      school: string;
-      course: string;
-      years: number;
-    };
-    timetable: Record<string, never>;
-    location: string;
-    price: number;
-  }
-
-  // interface TutorCardProps extends TutorProps {
-  //   id: number;
-  // }
-
-  const { data: tutors } = api.tutor.getAll.useQuery();
-
-  // const tutors: TutorProps[] = [
-  //   {
-  //     imageUrl:
-  //       "https://tutorcircle.sg/_next/image?url=https%3A%2F%2Ftutorcircle.sg%2Fold%2Ftutor_icon%2F471_tutor_icon.jpeg&w=1200&q=75",
-  //     profile: {
-  //       name: "Cayla",
-  //       subjects: [],
-  //     },
-  //     intro: {
-  //       certification: "High Dip",
-  //       school: "SOMA",
-  //       course: "Music Production and Engineering",
-  //       years: 0,
-  //     },
-  //     timetable: {},
-  //     location: "Singapore",
-  //     price: 10,
-  //   },
-  //   {
-  //     imageUrl:
-  //       "https://tutorcircle.sg/_next/image?url=https%3A%2F%2Ftutorcircle.sg%2Fold%2Ftutor_icon%2F468_tutor_icon.jpeg&w=1200&q=75",
-  //     profile: {
-  //       name: "Gabriel",
-  //       subjects: ["General Paper", "Maths", "Physics"],
-  //     },
-  //     intro: {
-  //       certification: "Degree",
-  //       school: "NUS",
-  //       course: "Computer Science",
-  //       years: 0,
-  //     },
-  //     timetable: {},
-  //     location: "Singapore",
-  //     price: 10,
-  //   },
-  //   {
-  //     imageUrl:
-  //       "https://tutorcircle.sg/_next/image?url=https%3A%2F%2Ftutorcircle.sg%2Fold%2Ftutor_icon%2F450_tutor_icon.jpeg&w=1200&q=75",
-  //     profile: {
-  //       name: "Isaac",
-  //       subjects: ["English", "Chinese", "Elementary Maths"],
-  //     },
-  //     intro: {
-  //       certification: "Degree",
-  //       school: "SUSS",
-  //       course: "Marketing",
-  //       years: 0,
-  //     },
-  //     timetable: {},
-  //     location: "Singapore",
-  //     price: 10,
-  //   },
-  // ];
+  const { data: tutors, isLoading } = api.tutor.getAll.useQuery();
 
   type TutorCardProps = RouterOutputs["tutor"]["getAll"][number];
   function TutorCard(props: TutorCardProps) {
@@ -308,11 +237,13 @@ function Tutors({ filters }: { filters: string[] }) {
       experience,
       location,
       price,
+      subjects,
     } = props;
     const [tab, setTab] = useState("Profile");
+    const subjects_ = subjects.map((subject) => subject.name).join(", ");
     return (
       <div className="card relative bg-base-100 shadow-xl">
-        <div className="absolute rounded-none rounded-ss-2xl bg-black px-2 py-1 text-white">
+        <div className="absolute rounded-none rounded-ss-2xl bg-black/50 px-2 py-1 text-white">
           Tutor {id}
         </div>
         <Link href={`/tutor/${id}/profile`}>
@@ -327,86 +258,63 @@ function Tutors({ filters }: { filters: string[] }) {
 
         <div className="card-body">
           <div role="tablist" className="tabs tabs-bordered">
-            <button
-              role="tab"
-              className={`tab ${tab === "Profile" && "tab-active"}`}
-              onClick={() => setTab("Profile")}
-            >
-              Profile
-            </button>
-            <button
-              role="tab"
-              className={`tab ${tab === "Intro" && "tab-active"}`}
-              onClick={() => setTab("Intro")}
-            >
-              Intro
-            </button>
-            <button
-              role="tab"
-              className={`tab ${tab === "Timetable" && "tab-active"}`}
-              onClick={() => setTab("Timetable")}
-            >
-              Timetable
-            </button>
+            {["Profile", "Intro"].map((item) => (
+              <button
+                key={item}
+                role="tab"
+                className={`tab ${tab === item && "tab-active"}`}
+                onClick={() => setTab(item)}
+              >
+                {item}
+              </button>
+            ))}
           </div>
           <h2 className="card-title">{name}</h2>
           {tab === "Profile" && (
-            <>
-              {/* <p>{profile.subjects.join(", ")}</p> */}
-              <div className="flex pt-5">
-                <div className="flex-1">
-                  <div className="flex gap-1">
-                    <FaLocationDot />
-                    <span>
-                      {location}
-                      <br />
-                      Location
-                    </span>
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <div className="flex gap-1">
-                    <FaCircleDollarToSlot />
-                    <span>
-                      SGD ${price} Up
-                      <br />
-                      /hour
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </>
+            <div className="grid grid-cols-2 grid-rows-2 pt-5">
+              <Statistic
+                className="col-span-2"
+                tip={`Subjects: ${subjects_}`}
+                icon={MdSubject}
+                value={subjects_}
+              />
+              <Statistic
+                tip={`Location: ${location}`}
+                icon={FaLocationDot}
+                value={location}
+              />
+
+              <Statistic
+                tip={`Rate: Starting from $${price}/hour`}
+                icon={FaCircleDollarToSlot}
+                value={`$${price}/hour up`}
+              />
+            </div>
           )}
           {tab === "Intro" && (
             <div className="grid grid-cols-2 grid-rows-2 pt-5">
-              <div className="">
-                <div className="flex gap-1">
-                  <FaLocationDot />
-                  <span>{achievement}</span>
-                </div>
-              </div>
-              <div className="">
-                <div className="flex gap-1">
-                  <FaSchool />
-                  <span>{school}</span>
-                </div>
-              </div>
-              <div className="">
-                <div className="flex gap-1">
-                  <IoMdTime />
-                  <span>{experience}</span>
-                </div>
-              </div>
-              <div className="">
-                <div className="flex gap-1">
-                  {/* FIXME: size of FaBook not adjustable */}
-                  <FaBook />
-                  <span className="truncate">{course}</span>
-                </div>
-              </div>
+              <Statistic
+                tip={`Achievement: ${achievement}`}
+                icon={GrCertificate}
+                value={achievement}
+              />
+              <Statistic
+                tip={`School: ${school}`}
+                icon={FaSchool}
+                value={school}
+              />
+              <Statistic
+                tip={`Experience: ${experience}`}
+                icon={IoMdTime}
+                value={experience}
+              />
+              <Statistic
+                tip={`Course: ${course}`}
+                icon={FaBook}
+                value={course}
+              />
             </div>
           )}
-          {tab === "Timetable" && <p>...</p>}
         </div>
       </div>
     );
@@ -431,12 +339,14 @@ function Tutors({ filters }: { filters: string[] }) {
       <div className="mb-5 text-center">
         <h1 className="text-lg font-bold">Find the best tutor for you</h1>
         <small>
-          <span className="font-semibold text-primary">{tutors?.length}</span>{" "}
+          <span className="font-semibold text-primary">
+            {tutors ? tutors.length : "0"}
+          </span>{" "}
           Tutors
         </small>
       </div>
       <div className="grid grid-cols-1 gap-3 px-24 md:grid-cols-2 lg:grid-cols-3">
-        <TutorCards />
+        {isLoading ? <Spinner /> : <TutorCards />}
       </div>
     </div>
   );

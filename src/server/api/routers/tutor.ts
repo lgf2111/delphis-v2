@@ -12,7 +12,7 @@ export const tutorRouter = createTRPCRouter({
         }),
 
     getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.db.tutor.findMany();
+        return ctx.db.tutor.findMany({ include: { subjects: true } });
     }),
 
     getById: publicProcedure.input(z.object({ id: z.number() })).query(({ ctx, input }) => {
