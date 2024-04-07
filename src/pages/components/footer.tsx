@@ -12,14 +12,14 @@ export default function Footer() {
             href="mailto:jeff.lee@delphistech.com"
             className="link-hover link flex items-center gap-1"
           >
-            <MdEmail /> Email: jeff.lee@delphistech.com
+            <MdEmail /> Email: felix.liang@delphistech.com
           </a>
           <a
             href="https://api.whatsapp.com/send/?phone=6588128123&text&type=phone_number&app_absent=0"
             target="_blank"
             className="link-hover link flex items-center gap-1"
           >
-            <FaWhatsapp /> Whatsapp: +65 8812 8123
+            <FaWhatsapp /> Whatsapp: +65 9383 6972
           </a>
         </p>
         <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end"></nav>

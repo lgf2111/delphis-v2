@@ -7,14 +7,12 @@ import {
   IoIosInformationCircleOutline,
   IoMdTime,
 } from "react-icons/io";
-import { RouterOutputs, api } from "~/utils/api";
+import { type RouterOutputs, api } from "~/utils/api";
 import Spinner from "./components/spinner";
 import { GrCertificate } from "react-icons/gr";
 import Statistic from "./components/statistic";
 import { MdSubject } from "react-icons/md";
 import Modal from "./components/modal";
-import { CiCircleInfo } from "react-icons/ci";
-import { AiFillInfoCircle } from "react-icons/ai";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);
