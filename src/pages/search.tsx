@@ -9,6 +9,7 @@ import { GrCertificate } from "react-icons/gr";
 import Statistic from "./components/statistic";
 import { MdSubject } from "react-icons/md";
 import Modal from "./components/modal";
+import { CiCircleInfo } from "react-icons/ci";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);
@@ -337,6 +338,11 @@ function Tutors({ filters }: { filters: string[] }) {
           </span>{" "}
           Tutors
         </small>
+        <br />
+        <div className="badge badge-info gap-2 p-3">
+          <CiCircleInfo />
+          Below are just sample tutors, real tutors will be added once released.
+        </div>
       </div>
       <div className="grid grid-cols-1 gap-3 px-24 md:grid-cols-2 lg:grid-cols-3">
         {isLoading ? <Spinner /> : <TutorCards />}
