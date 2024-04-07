@@ -26,7 +26,13 @@ function Hero() {
             <li>Learn from tutors that fit your budget and schedule</li>
             <li>Wide variety of tutors and subject for you to choose from</li>
           </ul>
-          <button className="btn btn-primary px-10">Learn more</button>
+          <a
+            className="btn btn-primary px-10"
+            href="https://form.jotform.com/240903353188053"
+            target="_blank"
+          >
+            Learn more
+          </a>
         </div>
         <img src="/Landing.png" className="max-w-sm rounded-lg" />
       </div>
@@ -211,7 +217,13 @@ function CTA() {
           </div>
         </div>
         <div className="card-actions justify-center">
-          <button className="btn btn-primary px-10">Learn more</button>
+          <a
+            className="btn btn-primary px-10"
+            href="https://form.jotform.com/240903353188053"
+            target="_blank"
+          >
+            Learn more
+          </a>
         </div>
       </div>
     </div>
