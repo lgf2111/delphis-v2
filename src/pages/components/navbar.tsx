@@ -1,7 +1,10 @@
 import Link from "next/link";
 import React from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Navbar() {
+  const { data: session } = useSession();
+
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -49,6 +52,15 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
+        {session ? (
+          <button className="btn btn-primary" onClick={() => signOut()}>
+            Sign Out
+          </button>
+        ) : (
+          <button className="btn btn-primary" onClick={() => signIn()}>
+            Sign In
+          </button>
+        )}
         <a
           className="btn btn-primary"
           href="https://form.jotform.com/240903353188053"

@@ -1,3 +1,5 @@
+import { type Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { Inter } from "next/font/google";
 
@@ -12,9 +14,13 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
-const MyApp: AppType = ({ Component, pageProps }) => {
+
+const MyApp: AppType<{ session: Session | null }> = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}) => {
   return (
-    <>
+    <SessionProvider session={session}>
       <Head>
         <title>Delphis</title>
         <meta name="description" content="Home of home tutors" />
@@ -25,7 +31,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <Component {...pageProps} />
         <Footer />
       </main>
-    </>
+    </SessionProvider>
   );
 };
 
