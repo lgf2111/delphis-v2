@@ -30,6 +30,7 @@ interface FitlersProps {
   setFilters: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
+// FIXME: Same for the “Grade” button
 function Filters(props: FitlersProps) {
   const { filters, setFilters } = props;
 
@@ -109,8 +110,15 @@ function Filters(props: FitlersProps) {
       },
     ];
 
+    // FIXME: When selecting the subjects, the first button is outlined & wont disappear after selecting other subjects
     return (
-      <Modal buttonText="Subject">
+      <Modal
+        button={
+          <>
+            Subject <FaCaretDown />
+          </>
+        }
+      >
         <div className="flex flex-col gap-5">
           {subjects.map((subject, index) => (
             <Card filter={subject} key={index} />
@@ -121,84 +129,67 @@ function Filters(props: FitlersProps) {
   }
   // TODO: update location button
   function Location() {
-    const modalRef = useRef<HTMLDialogElement | null>(null);
     return (
-      <>
-        <button
-          className="btn"
-          onClick={() => modalRef.current?.showModal()}
-          disabled
-        >
-          Location <FaCaretDown />
-        </button>
-        <dialog ref={modalRef} className="modal">
-          <div className="modal-box">
-            <h3 className="text-lg font-bold">Hello!</h3>
-            <p className="py-4">Press ESC key or click outside to close</p>
-          </div>
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
-      </>
+      <Modal
+        button={
+          <>
+            Location <FaCaretDown />
+          </>
+        }
+        buttonClassName="btn-disabled"
+        showClose
+      >
+        <h3 className="text-lg font-bold">Hello!</h3>
+        <p className="py-4">Press ESC key or click outside to close</p>
+      </Modal>
     );
   }
   function Grade() {
-    const modalRef = useRef<HTMLDialogElement | null>(null);
     const grades = [
       { title: "Secondary School", items: ["S1", "S2", "S3", "S4", "S5"] },
       { title: "Primary School", items: ["P1", "P2", "P3", "P4", "P5", "P6"] },
     ];
     return (
-      <>
-        <button className="btn" onClick={() => modalRef.current?.showModal()}>
-          Grade <FaCaretDown />
-        </button>
-        <dialog ref={modalRef} className="modal">
-          <div className="modal-box flex flex-col gap-5">
-            {grades.map((grade, index) => (
-              <Card filter={grade} key={index} />
-            ))}
-          </div>
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
-      </>
+      <Modal
+        button={
+          <>
+            Grade <FaCaretDown />
+          </>
+        }
+      >
+        <div className="flex flex-col gap-5">
+          {grades.map((grade, index) => (
+            <Card filter={grade} key={index} />
+          ))}
+        </div>
+      </Modal>
     );
   }
   // TODO: update price filter
   function Others() {
-    const modalRef = useRef<HTMLDialogElement | null>(null);
-
     return (
-      <>
-        <button
-          className="btn"
-          onClick={() => modalRef.current?.showModal()}
-          disabled
-        >
-          Others <FaCaretDown />
-        </button>
-        <dialog ref={modalRef} className="modal">
-          <div className="modal-box">
-            <h3 className="text-lg font-bold">Expected Fee</h3>
-          </div>
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
-      </>
+      <Modal
+        button={
+          <>
+            Others <FaCaretDown />
+          </>
+        }
+        buttonClassName="btn-disabled"
+      >
+        <h3 className="text-lg font-bold">Expected Fee</h3>
+      </Modal>
     );
   }
 
   return (
     <>
-      <div className="flex justify-center gap-4">
-        <Subject />
-        <Location />
-        <Grade />
-        <Others />
+      <div className="flex justify-center">
+        <div className="flex gap-4 overflow-scroll">
+          <Subject />
+          <Location />
+          <Grade />
+          <Others />
+        </div>
       </div>
       <div className="flex justify-center gap-2">
         {filters.map((filter, index) => (
@@ -253,7 +244,7 @@ function Tutors({ filters }: { filters: string[] }) {
           </figure>
         </Link>
 
-        <div className="card-body">
+        <div className="card-body overflow-scroll">
           <div role="tablist" className="tabs tabs-bordered">
             {["Profile", "Intro"].map((item) => (
               <button
@@ -333,7 +324,7 @@ function Tutors({ filters }: { filters: string[] }) {
 
   return (
     <div className="">
-      <div className="mb-5 text-center">
+      <div className="mb-5 flex flex-col gap-2 text-center">
         <h1 className="text-lg font-bold">Find the best tutor for you</h1>
         <small>
           <span className="font-semibold text-primary">
@@ -341,11 +332,11 @@ function Tutors({ filters }: { filters: string[] }) {
           </span>{" "}
           Tutors
         </small>
-        <br />
-        <div className="badge badge-info gap-2 p-3">
-          <IoIosInformationCircleOutline />
+        <div className="alert alert-info flex max-w-96 gap-2 self-center">
+          <IoIosInformationCircleOutline size={30} />
           Below are just sample tutors, real tutors will be added once released.
         </div>
+        <br />
       </div>
       <div className="grid grid-cols-1 gap-3 px-24 md:grid-cols-2 lg:grid-cols-3">
         {isLoading ? <Spinner /> : <TutorCards />}

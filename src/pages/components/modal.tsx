@@ -1,13 +1,13 @@
 import React from "react";
 
 type ModalProps = {
-  buttonText: string;
+  button: React.ReactNode | string;
   buttonClassName?: string;
   children: React.ReactNode;
   showClose?: boolean;
 };
 export default function Modal(props: ModalProps) {
-  const { buttonText, buttonClassName, children: modal, showClose } = props;
+  const { button, buttonClassName, children: modal, showClose } = props;
   const modalRef = React.useRef<HTMLDialogElement | null>(null);
   return (
     <>
@@ -15,7 +15,7 @@ export default function Modal(props: ModalProps) {
         className={`btn ${buttonClassName ?? ""}`}
         onClick={() => modalRef.current?.showModal()}
       >
-        {buttonText}
+        {button}
       </button>
       <dialog ref={modalRef} className="modal">
         {showClose ? (

@@ -18,10 +18,10 @@ export default function Home() {
 function Hero() {
   return (
     <div className="hero">
-      <div className="hero-content flex-col lg:flex-row">
+      <div className="hero-content flex-col gap-6 lg:flex-row">
         <div>
           <h1 className="text-5xl font-bold">Find your desired tutors here</h1>
-          <ul className="list-inside list-disc py-6">
+          <ul className="list-inside list-disc py-6 text-justify">
             <li>Take customisable 1-on-1 lessons trusted by many users</li>
             <li>Learn from tutors that fit your budget and schedule</li>
             <li>Wide variety of tutors and subject for you to choose from</li>
@@ -117,7 +117,7 @@ function Features() {
   return (
     <div className="flex flex-col">
       <h1 className="text-center text-lg font-bold">Why Choose Delphis?</h1>
-      <div className="flex pt-5">
+      <div className="flex flex-col gap-10 pt-5 sm:flex-row">
         {features.map((feature, index) => (
           <Feature key={index} {...feature} />
         ))}
@@ -193,7 +193,7 @@ function CTA() {
           Seize the learning opportunity and get matched with your dedicated
           tutor now!
         </h1>
-        <div className="flex py-5">
+        <div className="flex flex-col gap-10 py-5 sm:flex-row">
           <div className="flex-1">
             <span className="text-xl font-bold">10+</span>
             <br />
