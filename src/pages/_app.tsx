@@ -17,7 +17,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <>
       <Head>
         <title>Delphis</title>
-        <meta name="description" content="Home for home tutors" />
+        <meta name="description" content="Home of home tutors" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`font-sans ${inter.variable}`}>

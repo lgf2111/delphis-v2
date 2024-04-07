@@ -2,7 +2,11 @@ import Link from "next/link";
 import React, { useRef, useState } from "react";
 import { FaBook, FaCaretDown, FaSchool } from "react-icons/fa";
 import { FaCircleDollarToSlot, FaLocationDot } from "react-icons/fa6";
-import { IoIosCloseCircle, IoMdTime } from "react-icons/io";
+import {
+  IoIosCloseCircle,
+  IoIosInformationCircleOutline,
+  IoMdTime,
+} from "react-icons/io";
 import { RouterOutputs, api } from "~/utils/api";
 import Spinner from "./components/spinner";
 import { GrCertificate } from "react-icons/gr";
@@ -10,6 +14,7 @@ import Statistic from "./components/statistic";
 import { MdSubject } from "react-icons/md";
 import Modal from "./components/modal";
 import { CiCircleInfo } from "react-icons/ci";
+import { AiFillInfoCircle } from "react-icons/ai";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);
@@ -340,7 +345,7 @@ function Tutors({ filters }: { filters: string[] }) {
         </small>
         <br />
         <div className="badge badge-info gap-2 p-3">
-          <CiCircleInfo />
+          <IoIosInformationCircleOutline />
           Below are just sample tutors, real tutors will be added once released.
         </div>
       </div>

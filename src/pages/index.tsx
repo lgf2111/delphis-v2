@@ -1,5 +1,7 @@
 import { type IconType } from "react-icons";
-import { IoIosAlarm } from "react-icons/io";
+import { FaChalkboardTeacher } from "react-icons/fa";
+import { IoIosAlarm, IoIosTimer } from "react-icons/io";
+import { MdAutoAwesome } from "react-icons/md";
 
 export default function Home() {
   return (
@@ -89,25 +91,25 @@ function Features() {
   const Feature = ({ Icon, title, description }: FeatureProps) => {
     return (
       <div className="flex flex-1 flex-col flex-wrap items-center px-3 text-center">
-        <Icon className="rounded-xl bg-primary p-1 text-white" size={50} />
-        <h1 className="text-lg font-bold">{title}</h1>
+        <Icon className="rounded-xl bg-primary p-3 text-white" size={75} />
+        <h1 className="mt-2 text-lg font-bold">{title}</h1>
         <p className="">{description}</p>
       </div>
     );
   };
   const features = [
     {
-      Icon: IoIosAlarm,
+      Icon: FaChalkboardTeacher,
       title: "Choose ideal tutor",
       description: "Find tutors best suited for you yourself.",
     },
     {
-      Icon: IoIosAlarm,
+      Icon: MdAutoAwesome,
       title: "Free matching service",
       description: "Find tutors best suited for you automatically.",
     },
     {
-      Icon: IoIosAlarm,
+      Icon: IoIosTimer,
       title: "Free trial lesson",
       description: "Tutors will be assigned to your for free trial lesson.",
     },
