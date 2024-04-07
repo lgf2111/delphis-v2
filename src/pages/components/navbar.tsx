@@ -1,6 +1,8 @@
 import Link from "next/link";
 import React from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { IoIosMenu } from "react-icons/io";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -10,20 +12,7 @@ export default function Navbar() {
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
+            <IoIosMenu size={30} />
           </div>
           <ul
             tabIndex={0}
@@ -35,6 +24,30 @@ export default function Navbar() {
             <li>
               <a>About Us</a>
             </li>
+            <li>
+              <a
+                href="https://form.jotform.com/240903353188053"
+                target="_blank"
+              >
+                Find Tutor
+              </a>
+            </li>
+            <div className="p-1"></div>
+            {session ? (
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => signOut()}
+              >
+                Sign Out
+              </button>
+            ) : (
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => signIn()}
+              >
+                Sign In
+              </button>
+            )}
           </ul>
         </div>
         <Link className="btn btn-ghost text-xl" href="/">
@@ -51,7 +64,14 @@ export default function Navbar() {
           </li>
         </ul>
       </div>
-      <div className="navbar-end">
+      <div className="navbar-end hidden gap-5 lg:flex">
+        <a
+          className="link-hover link font-semibold"
+          href="https://form.jotform.com/240903353188053"
+          target="_blank"
+        >
+          Find Tutor
+        </a>
         {session ? (
           <button className="btn btn-primary" onClick={() => signOut()}>
             Sign Out
@@ -61,13 +81,6 @@ export default function Navbar() {
             Sign In
           </button>
         )}
-        <a
-          className="btn btn-primary"
-          href="https://form.jotform.com/240903353188053"
-          target="_blank"
-        >
-          Find Tutor
-        </a>
       </div>
     </div>
   );
