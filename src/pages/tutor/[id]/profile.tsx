@@ -159,7 +159,7 @@ function Profile(props: DetailProps) {
                   <td>{subject.rate}</td>
                   <td>
                     <a
-                      href={`https://wa.me/6588128123?text=${message}`}
+                      href={`https://wa.me/6593836972?text=${message}`}
                       target="_blank"
                       className="btn btn-success btn-sm text-white"
                     >
