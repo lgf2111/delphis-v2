@@ -9,16 +9,16 @@ datasource db {
 }
 
 model Tutor {
-    id           String @id @default(cuid())
-    name         String
-    imageUrl     String
-    category     String
-    school       String
-    achievement  String
-    course       String
-    experience   Int
-    location     String
-    introduction String
+    id            Int     @id @default(autoincrement())
+    name          String
+    imageUrl      String
+    category      String
+    qualification String
+    school        String
+    course        String?
+    experience    Int
+    location      String
+    introduction  String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -29,13 +29,13 @@ model Tutor {
 }
 
 model Subject {
-    id    String @id @default(cuid())
+    id    String   @id @default(cuid())
     name  String
-    grade String
+    grade String[]
     rate  Int
 
-    tutor   Tutor  @relation(fields: [tutorId], references: [id])
-    tutorId String
+    tutor   Tutor @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+    tutorId Int
 }
 
 // Necessary for Next auth

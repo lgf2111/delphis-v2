@@ -2,7 +2,6 @@ import Link from "next/link";
 import React from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { IoIosMenu } from "react-icons/io";
-import toast from "react-hot-toast";
 
 export default function Navbar() {
   const { data: session } = useSession();

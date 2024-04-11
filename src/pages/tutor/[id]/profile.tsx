@@ -6,9 +6,10 @@ import { MdCategory } from "react-icons/md";
 import { type RouterOutputs, api } from "~/utils/api";
 import { formatDistance, subDays } from "date-fns";
 import { GrCertificate } from "react-icons/gr";
-import Spinner from "~/pages/components/spinner";
-import Statistic from "~/pages/components/statistic";
+import Spinner from "~/components/spinner";
+import Statistic from "~/components/statistic";
 import { BsWhatsapp } from "react-icons/bs";
+import { calcMinRate } from "~/helpers/rate";
 
 export default function TutorProfile() {
   const router = useRouter();
@@ -52,7 +53,7 @@ function Profile(props: DetailProps) {
     imageUrl,
     category,
     course,
-    achievement,
+    qualification,
     location,
     school,
     experience,
@@ -62,7 +63,7 @@ function Profile(props: DetailProps) {
     subjects,
   } = props;
 
-  const minRate = Math.min(...subjects.map((subject) => subject.rate));
+  const minRate = calcMinRate(subjects);
 
   return (
     <div className="flex flex-col gap-6 bg-white p-12">
@@ -94,15 +95,17 @@ function Profile(props: DetailProps) {
               value={school}
             />
             <Statistic
-              tip={`Achievement: ${achievement}`}
+              tip={`Qualification: ${qualification}`}
               icon={<GrCertificate />}
-              value={achievement}
+              value={qualification}
             />
-            <Statistic
-              tip={`Course: ${course}`}
-              icon={<FaBook />}
-              value={course}
-            />
+            {course && (
+              <Statistic
+                tip={`Course: ${course}`}
+                icon={<FaBook />}
+                value={course}
+              />
+            )}
             <Statistic
               tip={`Experience: ${experience} years`}
               icon={<IoMdTime />}
@@ -146,16 +149,17 @@ function Profile(props: DetailProps) {
           </thead>
           <tbody>
             {subjects.map((subject, index) => {
+              const grade = subject.grade.join(", ");
               const message = encodeURI(
                 `Delphis Tutor Request Form\n` +
                   `Tutor: ${name} (Tutor ${id})\n` +
                   `Subject: ${subject.name}\n` +
-                  `Education Level: ${subject.grade}`,
+                  `Education Level: ${grade}`,
               );
               return (
                 <tr key={index}>
                   <td>{subject.name}</td>
-                  <td>{subject.grade}</td>
+                  <td>{grade}</td>
                   <td>{subject.rate}</td>
                   <td>
                     <a

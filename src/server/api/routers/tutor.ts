@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
+
 export const tutorRouter = createTRPCRouter({
     hello: publicProcedure
         .input(z.object({ text: z.string() }))
@@ -11,8 +12,8 @@ export const tutorRouter = createTRPCRouter({
             };
         }),
 
-    getAll: publicProcedure.query(({ ctx }) => {
-        return ctx.db.tutor.findMany({ include: { subjects: true } });
+    getAll: publicProcedure.query(async ({ ctx }) => {
+        return await ctx.db.tutor.findMany({ include: { subjects: true } })
     }),
 
     getById: publicProcedure.input(z.object({ id: z.number() })).query(({ ctx, input }) => {
