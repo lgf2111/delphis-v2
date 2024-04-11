@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Tutor {
-    id           Int    @id @default(autoincrement())
+    id           String @id @default(cuid())
     name         String
     imageUrl     String
     category     String
@@ -29,13 +29,13 @@ model Tutor {
 }
 
 model Subject {
-    id    Int    @id @default(autoincrement())
+    id    String @id @default(cuid())
     name  String
     grade String
     rate  Int
 
-    tutor   Tutor @relation(fields: [tutorId], references: [id])
-    tutorId Int
+    tutor   Tutor  @relation(fields: [tutorId], references: [id])
+    tutorId String
 }
 
 // Necessary for Next auth
