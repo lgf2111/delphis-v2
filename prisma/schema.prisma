@@ -31,7 +31,7 @@ model Tutor {
 model Subject {
     id    String   @id @default(cuid())
     name  String
-    grade String[]
+    level String[]
     rate  Int
 
     tutor   Tutor @relation(fields: [tutorId], references: [id], onDelete: Cascade)

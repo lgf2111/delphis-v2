@@ -149,17 +149,17 @@ function Profile(props: DetailProps) {
           </thead>
           <tbody>
             {subjects.map((subject, index) => {
-              const grade = subject.grade.join(", ");
+              const level = subject.level.join(", ");
               const message = encodeURI(
                 `Delphis Tutor Request Form\n` +
                   `Tutor: ${name} (Tutor ${id})\n` +
                   `Subject: ${subject.name}\n` +
-                  `Education Level: ${grade}`,
+                  `Education Level: ${level}`,
               );
               return (
                 <tr key={index}>
                   <td>{subject.name}</td>
-                  <td>{grade}</td>
+                  <td>{level}</td>
                   <td>{subject.rate}</td>
                   <td>
                     <a

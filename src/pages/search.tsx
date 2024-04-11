@@ -35,7 +35,7 @@ interface FitlersProps {
   setFilters: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-// FIXME: Same for the “Grade” button
+// FIXME: Same for the “Level” button
 function Filters(props: FitlersProps) {
   const { filters, setFilters } = props;
 
@@ -149,8 +149,8 @@ function Filters(props: FitlersProps) {
       </Modal>
     );
   }
-  function Grade() {
-    const grades = [
+  function Level() {
+    const levels = [
       { title: "Secondary School", items: ["S1", "S2", "S3", "S4", "S5"] },
       { title: "Primary School", items: ["P1", "P2", "P3", "P4", "P5", "P6"] },
     ];
@@ -158,13 +158,13 @@ function Filters(props: FitlersProps) {
       <Modal
         button={
           <>
-            Grade <FaCaretDown />
+            Level <FaCaretDown />
           </>
         }
       >
         <div className="flex flex-col gap-5">
-          {grades.map((grade, index) => (
-            <Card filter={grade} key={index} />
+          {levels.map((level, index) => (
+            <Card filter={level} key={index} />
           ))}
         </div>
       </Modal>
@@ -192,7 +192,7 @@ function Filters(props: FitlersProps) {
         <div className="flex gap-4 overflow-scroll">
           <Subject />
           <Location />
-          <Grade />
+          <Level />
           <Others />
         </div>
       </div>
