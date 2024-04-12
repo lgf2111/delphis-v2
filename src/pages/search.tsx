@@ -17,7 +17,7 @@ import {
 import { GrCertificate } from "react-icons/gr";
 import { IoIosInformationCircleOutline, IoMdTime } from "react-icons/io";
 import Spinner from "~/components/spinner";
-import { calcMinRate, makeSubjectNames } from "~/utils/tutor";
+import { calcMinRate, makeSubjectNames, subjects } from "~/utils/tutor";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);
@@ -67,54 +67,6 @@ function Filters(props: FitlersProps) {
   }
 
   function Subject() {
-    const subjects = [
-      {
-        title: "O & N Level",
-        items: [
-          "English",
-          "Mother Tongue",
-          "H. Mother Tongue",
-          "Mother Tongue B",
-          "Third Language",
-          "E. Maths",
-          "A. Maths",
-          "POA",
-          "P. Biology",
-          "P. Physics",
-          "P. Chemistry",
-          "CS (Chem/Bio)",
-          "CS (Chem/Phy)",
-          "CS (Bio/Phy)",
-          "P. Literature",
-          "P. Geography",
-          "P. History",
-          "CH (SS/Lit)",
-          "CH (SS/His)",
-          "CH (SS/Lit in MT)",
-          "D&T",
-          "F&N",
-          "Art",
-          "Music",
-          "H. Art",
-          "H. Music",
-          "Drama",
-          "Computing",
-          "Electronics",
-        ],
-      },
-      {
-        title: "PSLE",
-        items: [
-          "English",
-          "Mother Tongue",
-          "H. Mother Tongue",
-          "Maths",
-          "Science",
-          "Social Studies",
-        ],
-      },
-    ];
-
     // FIXME: When selecting the subjects, the first button is outlined & wont disappear after selecting other subjects
     return (
       <Modal
@@ -216,6 +168,8 @@ function Filters(props: FitlersProps) {
 
 function Tutors({ filters }: { filters: string[] }) {
   const { data: tutors, isLoading } = api.tutor.getAll.useQuery();
+  let filteredTutors = tutors;
+  const tutorCount = filteredTutors?.length ?? 0;
 
   type TutorCardProps = RouterOutputs["tutor"]["getAll"][number];
   function TutorCard(props: TutorCardProps) {
@@ -318,14 +272,12 @@ function Tutors({ filters }: { filters: string[] }) {
   }
 
   function TutorCards() {
-    const filteredTutors = tutors;
+    filteredTutors = tutors?.filter((tutor) =>
+      filters.every((filter) =>
+        tutor.subjects.some((subject) => subject.name === filter),
+      ),
+    );
 
-    // let filteredTutors = [...tutors];
-    // if (filters.length > 0) {
-    //   filteredTutors = tutors.filter((tutor) =>
-    //     tutor.profile.subjects.some((subject) => filters.includes(subject)),
-    //   );
-    // }
     return filteredTutors?.map((tutor) => (
       <TutorCard key={tutor.id} {...tutor} />
     ));
@@ -336,9 +288,7 @@ function Tutors({ filters }: { filters: string[] }) {
       <div className="mb-5 flex flex-col gap-2 text-center">
         <h1 className="text-lg font-bold">Find the best tutor for you</h1>
         <small>
-          <span className="font-semibold text-primary">
-            {tutors ? tutors.length : "0"}
-          </span>{" "}
+          <span className="font-semibold text-primary">{tutorCount}</span>{" "}
           Tutors
         </small>
         <div className="alert alert-info flex max-w-96 gap-2 self-center">
