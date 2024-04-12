@@ -17,7 +17,7 @@ import {
 import { GrCertificate } from "react-icons/gr";
 import { IoIosInformationCircleOutline, IoMdTime } from "react-icons/io";
 import Spinner from "~/components/spinner";
-import { calcMinRate } from "~/utils/rate";
+import { calcMinRate, makeSubjectNames } from "~/utils/tutor";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);
@@ -233,7 +233,7 @@ function Tutors({ filters }: { filters: string[] }) {
 
     const [tab, setTab] = useState("Profile");
 
-    const subjectNames = subjects.map((subject) => subject.name).join(", ");
+    const subjectNames = makeSubjectNames(subjects);
     const minRate = calcMinRate(subjects);
 
     return (
