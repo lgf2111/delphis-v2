@@ -17,7 +17,7 @@ import {
 import { GrCertificate } from "react-icons/gr";
 import { IoIosInformationCircleOutline, IoMdTime } from "react-icons/io";
 import Spinner from "~/components/spinner";
-import { calcMinRate } from "~/helpers/rate";
+import { calcMinRate } from "~/utils/rate";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);

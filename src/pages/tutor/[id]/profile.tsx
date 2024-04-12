@@ -9,7 +9,7 @@ import { GrCertificate } from "react-icons/gr";
 import Spinner from "~/components/spinner";
 import Statistic from "~/components/statistic";
 import { BsWhatsapp } from "react-icons/bs";
-import { calcMinRate } from "~/helpers/rate";
+import { calcMinRate } from "~/utils/rate";
 
 export default function TutorProfile() {
   const router = useRouter();
