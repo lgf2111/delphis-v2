@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { FaCaretDown } from "react-icons/fa";
 import Modal from "~/components/modal";
@@ -168,8 +168,7 @@ function Filters(props: FitlersProps) {
 
 function Tutors({ filters }: { filters: string[] }) {
   const { data: tutors, isLoading } = api.tutor.getAll.useQuery();
-  let filteredTutors = tutors;
-  const tutorCount = filteredTutors?.length ?? 0;
+  const [tutorCount, setTutorCount] = useState(0);
 
   type TutorCardProps = RouterOutputs["tutor"]["getAll"][number];
   function TutorCard(props: TutorCardProps) {
@@ -272,11 +271,15 @@ function Tutors({ filters }: { filters: string[] }) {
   }
 
   function TutorCards() {
-    filteredTutors = tutors?.filter((tutor) =>
+    const filteredTutors = tutors?.filter((tutor) =>
       filters.every((filter) =>
         tutor.subjects.some((subject) => subject.name === filter),
       ),
     );
+
+    useEffect(() => {
+      setTutorCount(filteredTutors?.length ?? 0);
+    }, [filteredTutors]);
 
     return filteredTutors?.map((tutor) => (
       <TutorCard key={tutor.id} {...tutor} />
