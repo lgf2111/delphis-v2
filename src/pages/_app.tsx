@@ -12,6 +12,9 @@ import Footer from "../components/footer";
 
 import { Toaster } from "react-hot-toast";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -33,6 +36,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <Navbar />
         <Component {...pageProps} />
         <Footer />
+        <Analytics />
+        <SpeedInsights />
       </main>
     </SessionProvider>
   );
