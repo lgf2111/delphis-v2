@@ -18,6 +18,7 @@ import { GrCertificate } from "react-icons/gr";
 import { IoIosInformationCircleOutline, IoMdTime } from "react-icons/io";
 import Spinner from "~/components/spinner";
 import { calcMinRate, makeSubjectNames, subjects } from "~/utils/tutor";
+import toast from "react-hot-toast";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);
@@ -273,7 +274,10 @@ function Tutors({ filters }: { filters: string[] }) {
   function TutorCards() {
     const filteredTutors = tutors?.filter((tutor) =>
       filters.every((filter) =>
-        tutor.subjects.some((subject) => subject.name === filter),
+        tutor.subjects.some(
+          (subject) =>
+            subject.name === filter || subject.level.includes(filter),
+        ),
       ),
     );
 
