@@ -2,8 +2,24 @@ import React, { useState } from "react";
 import { type RouterInputs, api } from "~/utils/api";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
+import { type GetServerSideProps } from "next";
+import { getServerAuthSession } from "~/server/auth";
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getServerAuthSession(ctx);
+  return {
+    props: { session },
+  };
+};
 
 export default function AddTutor() {
+  const { data: session } = useSession();
+
+  if (!session) {
+    return <div>Unauthorized</div>;
+  }
+
   return (
     <div className="p-10">
       <AddTutorForm />
