@@ -5,21 +5,21 @@ import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { type GetServerSideProps } from "next";
 import { getServerAuthSession } from "~/server/auth";
+import { levels } from "~/utils/tutor";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getServerAuthSession(ctx);
+
+  if (session?.user.role !== "admin") {
+    return { redirect: { destination: "/search", permanent: false } };
+  }
+
   return {
     props: { session },
   };
 };
 
 export default function AddTutor() {
-  const { data: session } = useSession();
-
-  if (!session) {
-    return <div>Unauthorized</div>;
-  }
-
   return (
     <div className="p-10">
       <AddTutorForm />
@@ -75,20 +75,6 @@ function AddTutorForm() {
     selected,
     setSelected,
   }: InputProps) {
-    const levels = [
-      "P1",
-      "P2",
-      "P3",
-      "P4",
-      "P5",
-      "P6",
-      "S1",
-      "S2",
-      "S3",
-      "S4",
-      "S5",
-    ];
-
     if (type === "checkbox" && selected && setSelected) {
       const handleOnChange = (index: number) => {
         if (selected.includes(levels[index]!)) {
@@ -130,7 +116,7 @@ function AddTutorForm() {
             {...register(name, { valueAsNumber: type === "number" })}
             id={name}
             type={type}
-            className="input input-bordered w-full max-w-sm"
+            className="input input-bordered"
             placeholder={placeholder}
           />
         </div>
@@ -142,46 +128,49 @@ function AddTutorForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3">
-      <Input label="Name" name="name" />
-      <Input label="Image URL" name="imageUrl" />
-      <Input label="Category" name="category" />
-      <Input label="Qualification" name="qualification" />
-      <Input label="School" name="school" />
-      <Input label="Course" name="course" />
-      <Input label="Experience" name="experience" type="number" />
-      <Input label="Location" name="location" />
-      <Input label="Introduction" name="introduction" />
-      <Input label="Subject Name 1" name="subjectName1" />
-      <Input
-        label="Subject Level 1"
-        name="subjectLevel1"
-        type="checkbox"
-        selected={subjectLevel1}
-        setSelected={setSubjectLevel1}
-      />
-      <Input label="Subject Rate 1" name="subjectRate1" type="number" />
-      <Input label="Subject Name 2" name="subjectName2" />
-      <Input
-        label="Subject Level 2"
-        name="subjectLevel2"
-        type="checkbox"
-        selected={subjectLevel2}
-        setSelected={setSubjectLevel2}
-      />
-      <Input label="Subject Rate 2" name="subjectRate2" type="number" />
-      <Input label="Subject Name 3" name="subjectName3" />
-      <Input
-        label="Subject Level 3"
-        name="subjectLevel3"
-        type="checkbox"
-        selected={subjectLevel3}
-        setSelected={setSubjectLevel3}
-      />
-      <Input label="Subject Rate 3" name="subjectRate3" type="number" />
-      <button type="submit" className="btn btn-primary">
-        Submit
-      </button>
-    </form>
+    <div className="flex justify-center">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid w-3/4 gap-3">
+        <h1 className="text-3xl font-bold">Add Tutor Form</h1>
+        <Input label="Name" name="name" />
+        <Input label="Image URL" name="imageUrl" />
+        <Input label="Category" name="category" />
+        <Input label="Qualification" name="qualification" />
+        <Input label="School" name="school" />
+        <Input label="Course" name="course" />
+        <Input label="Experience" name="experience" type="number" />
+        <Input label="Location" name="location" />
+        <Input label="Introduction" name="introduction" />
+        <Input label="Subject Name 1" name="subjectName1" />
+        <Input
+          label="Subject Level 1"
+          name="subjectLevel1"
+          type="checkbox"
+          selected={subjectLevel1}
+          setSelected={setSubjectLevel1}
+        />
+        <Input label="Subject Rate 1" name="subjectRate1" type="number" />
+        <Input label="Subject Name 2" name="subjectName2" />
+        <Input
+          label="Subject Level 2"
+          name="subjectLevel2"
+          type="checkbox"
+          selected={subjectLevel2}
+          setSelected={setSubjectLevel2}
+        />
+        <Input label="Subject Rate 2" name="subjectRate2" type="number" />
+        <Input label="Subject Name 3" name="subjectName3" />
+        <Input
+          label="Subject Level 3"
+          name="subjectLevel3"
+          type="checkbox"
+          selected={subjectLevel3}
+          setSelected={setSubjectLevel3}
+        />
+        <Input label="Subject Rate 3" name="subjectRate3" type="number" />
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
   );
 }

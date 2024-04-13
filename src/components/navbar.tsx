@@ -64,21 +64,31 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="navbar-end hidden gap-5 lg:flex">
-        <a
-          className="link-hover link font-semibold"
-          href="https://form.jotform.com/240903353188053"
-          target="_blank"
-        >
-          Find Tutor
-        </a>
         {session ? (
-          <button className="btn btn-primary" onClick={() => signOut()}>
-            Sign Out
-          </button>
+          <>
+            <Link href="/tutor/add" className="link-hover link font-semibold">
+              Add Tutor
+            </Link>
+            <button className="btn btn-primary" onClick={() => signOut()}>
+              Sign Out
+            </button>
+          </>
         ) : (
-          <button className="btn btn-primary" onClick={() => signIn("google")}>
-            Sign In
-          </button>
+          <>
+            <Link
+              className="link-hover link font-semibold"
+              href="https://form.jotform.com/240903353188053"
+              target="_blank"
+            >
+              Find Tutor
+            </Link>
+            <button
+              className="btn btn-primary"
+              onClick={() => signIn("google")}
+            >
+              Sign In
+            </button>
+          </>
         )}
       </div>
     </div>
