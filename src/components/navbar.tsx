@@ -66,9 +66,11 @@ export default function Navbar() {
       <div className="navbar-end hidden gap-5 lg:flex">
         {session ? (
           <>
-            <Link href="/tutor/add" className="link-hover link font-semibold">
-              Add Tutor
-            </Link>
+            {session.user.role === "admin" && (
+              <Link href="/tutor/add" className="link-hover link font-semibold">
+                Add Tutor
+              </Link>
+            )}
             <button className="btn btn-primary" onClick={() => signOut()}>
               Sign Out
             </button>

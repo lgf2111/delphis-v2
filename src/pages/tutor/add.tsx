@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { type RouterInputs, api } from "~/utils/api";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useSession } from "next-auth/react";
 import { type GetServerSideProps } from "next";
 import { getServerAuthSession } from "~/server/auth";
 import { levels } from "~/utils/tutor";
