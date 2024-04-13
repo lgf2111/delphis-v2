@@ -33,8 +33,12 @@ type Inputs = RouterInputs["tutor"]["create"] & {
 
 function AddTutorForm() {
   const { mutate } = api.tutor.create.useMutation({
-    onSuccess: () => {
-      toast.success("Tutor created");
+    onSuccess: (data) => {
+      toast.success(`Tutor ${data.name} created`);
+      reset();
+      setSubjectLevel1([]);
+      setSubjectLevel2([]);
+      setSubjectLevel3([]);
     },
     onError: (e) => {
       toast.error(e.message);
@@ -44,12 +48,22 @@ function AddTutorForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     data.subjectLevel1 = subjectLevel1;
     data.subjectLevel2 = subjectLevel2;
     data.subjectLevel3 = subjectLevel3;
+    if (!data.subjectRate1) {
+      data.subjectRate1 = 0;
+    }
+    if (!data.subjectRate2) {
+      data.subjectRate2 = 0;
+    }
+    if (!data.subjectRate3) {
+      data.subjectRate3 = 0;
+    }
     mutate(data);
   };
 
