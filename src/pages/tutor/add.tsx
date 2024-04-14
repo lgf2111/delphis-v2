@@ -10,7 +10,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getServerAuthSession(ctx);
 
   if (session?.user.role !== "admin") {
-    return { redirect: { destination: "/search", permanent: false } };
+    return {
+      redirect: {
+        destination: `/?error=${encodeURI("You are not admin!")}`,
+        permanent: false,
+      },
+    };
   }
 
   return {

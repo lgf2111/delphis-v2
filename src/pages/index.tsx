@@ -1,9 +1,17 @@
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import { type IconType } from "react-icons";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { IoIosTimer } from "react-icons/io";
 import { MdAutoAwesome } from "react-icons/md";
 
 export default function Home() {
+  const router = useRouter();
+  const { error } = router.query;
+  if (error) {
+    toast.error(error as string);
+  }
+
   return (
     <main className="flex flex-col gap-10 py-10">
       <Hero />
