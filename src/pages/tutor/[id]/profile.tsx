@@ -50,27 +50,33 @@ function Profile(props: DetailProps) {
   const {
     id,
     name,
-    imageUrl,
+    citizenship,
+    dob,
+    gender,
+    race,
+    postalCode,
+    email,
+    locations,
+    education,
     category,
-    course,
-    qualification,
-    location,
     school,
-    experience,
+    gradYear,
+    photo,
+    availability,
     introduction,
-    createdAt,
+    display,
     updatedAt,
-    subjects,
+    createdAt,
   } = props;
 
-  const minRate = calcMinRate(subjects);
+  // const minRate = calcMinRate(subjects);
 
   return (
     <div className="flex flex-col gap-6 bg-white p-12">
       <div className="flex flex-col gap-10 md:flex-row">
         <div className="avatar">
           <div className="w-64 rounded">
-            <img src={imageUrl} />
+            <img src={photo ?? ""} />
           </div>
         </div>
         <div className="flex flex-col gap-3">
@@ -85,9 +91,9 @@ function Profile(props: DetailProps) {
               value={category}
             />
             <Statistic
-              tip={`Location: ${location}`}
+              tip={`Location: ${locations.join(", ")}`}
               icon={<FaLocationDot />}
-              value={location}
+              value={locations.join(", ")}
             />
             <Statistic
               tip={`School: ${school}`}
@@ -95,28 +101,21 @@ function Profile(props: DetailProps) {
               value={school}
             />
             <Statistic
-              tip={`Qualification: ${qualification}`}
+              tip={`Education: ${education}`}
               icon={<GrCertificate />}
-              value={qualification}
+              value={education}
             />
-            {course && (
-              <Statistic
-                tip={`Course: ${course}`}
-                icon={<FaBook />}
-                value={course}
-              />
-            )}
             <Statistic
-              tip={`Experience: ${experience} years`}
+              tip={`Graduation Year: ${gradYear}`}
               icon={<IoMdTime />}
-              value={`${experience} years`}
+              value={gradYear}
             />
           </div>
           <p>
             Starting from{" "}
-            <span className="text-2xl font-medium text-primary">
+            {/* <span className="text-2xl font-medium text-primary">
               ${minRate}
-            </span>
+            </span> */}
             /hour
           </p>
           <small>
@@ -148,7 +147,7 @@ function Profile(props: DetailProps) {
             </tr>
           </thead>
           <tbody>
-            {subjects.map((subject, index) => {
+            {/* {subjects.map((subject, index) => {
               const level = subject.level.join(", ");
               const message = encodeURI(
                 `Delphis Tutor Request Form\n` +
@@ -173,7 +172,7 @@ function Profile(props: DetailProps) {
                   </td>
                 </tr>
               );
-            })}
+            })} */}
           </tbody>
         </table>
       </div>

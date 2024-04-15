@@ -9,33 +9,40 @@ datasource db {
 }
 
 model Tutor {
-    id            Int     @id @default(autoincrement())
-    name          String
-    imageUrl      String
-    category      String
-    qualification String
-    school        String
-    course        String?
-    experience    Int
-    location      String
-    introduction  String
+    id           Int      @id @default(autoincrement())
+    name         String
+    citizenship  String
+    dob          DateTime
+    gender       String
+    race         String
+    postalCode   String
+    email        String
+    locations    String[]
+    education    String
+    category     String
+    school       String
+    gradYear     Int
+    photo        String?
+    availability String[]
+    introduction String
+    display      Boolean
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    subjects Subject[]
+    subjectsByLevel SubjectsByLevel[]
 
     @@index([name])
 }
 
-model Subject {
-    id    String   @id @default(cuid())
-    name  String
-    level String[]
-    rate  Int
-
-    tutor   Tutor @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+model SubjectsByLevel {
+    id      String   @id @default(cuid())
     tutorId Int
+    level   String
+    names   String[]
+    rate    Float
+
+    tutor Tutor @relation(fields: [tutorId], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth
@@ -71,7 +78,7 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
-    role          String    @default("user")
+    role          String    @default("USER")
     accounts      Account[]
     sessions      Session[]
 }

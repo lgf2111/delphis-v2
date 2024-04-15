@@ -18,7 +18,6 @@ import { GrCertificate } from "react-icons/gr";
 import { IoIosInformationCircleOutline, IoMdTime } from "react-icons/io";
 import Spinner from "~/components/spinner";
 import { calcMinRate, makeSubjectNames, subjects } from "~/utils/tutor";
-import toast from "react-hot-toast";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);
@@ -176,19 +175,20 @@ function Tutors({ filters }: { filters: string[] }) {
     const {
       id,
       name,
-      imageUrl,
-      qualification,
-      course,
+      locations,
+      education,
+      category,
       school,
-      experience,
-      location,
-      subjects,
+      gradYear,
+      photo,
+      availability,
+      introduction,
     } = props;
 
     const [tab, setTab] = useState("Profile");
 
-    const subjectNames = makeSubjectNames(subjects);
-    const minRate = calcMinRate(subjects);
+    // const subjectNames = makeSubjectNames(subjects);
+    // const minRate = calcMinRate(subjects);
 
     return (
       <div className="card relative bg-base-100 shadow-xl">
@@ -198,7 +198,7 @@ function Tutors({ filters }: { filters: string[] }) {
         <Link href={`/tutor/${id}/profile`}>
           <figure>
             <img
-              src={imageUrl}
+              src={photo ?? "/images/default.jpg"}
               alt={name}
               className="h-96 w-full rounded-t-2xl object-cover"
             />
@@ -221,31 +221,31 @@ function Tutors({ filters }: { filters: string[] }) {
           <h2 className="card-title">{name}</h2>
           {tab === "Profile" && (
             <div className="grid grid-cols-2 grid-rows-2 pt-5">
-              <Statistic
+              {/* <Statistic
                 className="col-span-2"
                 tip={`Teaching subjects: ${subjectNames}`}
                 icon={<MdSubject />}
                 value={subjectNames}
-              />
+              /> */}
               <Statistic
-                tip={`Location: ${location}`}
+                tip={`Location: ${locations.join(", ")}`}
                 icon={<FaLocationDot />}
-                value={location}
+                value={locations.join(", ")}
               />
 
-              <Statistic
+              {/* <Statistic
                 tip={`Rate: Starting from $${minRate}/hour`}
                 icon={<FaCircleDollarToSlot />}
                 value={`$${minRate}/hour up`}
-              />
+              /> */}
             </div>
           )}
           {tab === "Intro" && (
             <div className="grid grid-cols-2 grid-rows-2 pt-5">
               <Statistic
-                tip={`Qualification: ${qualification}`}
+                tip={`Education: ${education}`}
                 icon={<GrCertificate />}
-                value={qualification}
+                value={education}
               />
               <Statistic
                 tip={`School: ${school}`}
@@ -253,17 +253,10 @@ function Tutors({ filters }: { filters: string[] }) {
                 value={school}
               />
               <Statistic
-                tip={`Experience: ${experience}`}
+                tip={`Graduation Year: ${gradYear}`}
                 icon={<IoMdTime />}
-                value={experience}
+                value={gradYear}
               />
-              {course && (
-                <Statistic
-                  tip={`Course: ${course}`}
-                  icon={<FaBook />}
-                  value={course}
-                />
-              )}
             </div>
           )}
         </div>
@@ -272,14 +265,15 @@ function Tutors({ filters }: { filters: string[] }) {
   }
 
   function TutorCards() {
-    const filteredTutors = tutors?.filter((tutor) =>
-      filters.every((filter) =>
-        tutor.subjects.some(
-          (subject) =>
-            subject.name === filter || subject.level.includes(filter),
-        ),
-      ),
-    );
+    let filteredTutors = tutors;
+    // filteredTutors = tutors?.filter((tutor) =>
+    //   filters.every((filter) =>
+    //     tutor.subjects.some(
+    //       (subject) =>
+    //         subject.name === filter || subject.level.includes(filter),
+    //     ),
+    //   ),
+    // );
 
     useEffect(() => {
       setTutorCount(filteredTutors?.length ?? 0);

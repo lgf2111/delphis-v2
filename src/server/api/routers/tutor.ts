@@ -5,56 +5,50 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/
 
 export const tutorRouter = createTRPCRouter({
     getAll: publicProcedure.query(async ({ ctx }) => {
-        return await ctx.db.tutor.findMany({ include: { subjects: true } })
+        return await ctx.db.tutor.findMany({ include: { subjectsByLevel: true } })
     }),
 
     getById: publicProcedure.input(z.object({ id: z.number() })).query(({ ctx, input }) => {
-        return ctx.db.tutor.findFirst({ where: { id: input.id }, include: { subjects: true } });
+        return ctx.db.tutor.findFirst({ where: { id: input.id }, include: { subjectsByLevel: true } });
     }),
 
     create: protectedProcedure.input(z.object({
         name: z.string(),
-        imageUrl: z.string().default(""),
+        citizenship: z.string(),
+        dob: z.date(),
+        gender: z.string(),
+        race: z.string(),
+        postalCode: z.string(),
+        email: z.string(),
+        locations: z.array(z.string()),
+        education: z.string(),
         category: z.string(),
-        qualification: z.string(),
         school: z.string(),
-        course: z.string().optional(),
-        experience: z.number(),
-        location: z.string(),
+        gradYear: z.number(),
+        photo: z.string().optional(),
+        availability: z.array(z.string()),
         introduction: z.string(),
-        subjectName1: z.string(),
-        subjectLevel1: z.array(z.string()),
-        subjectRate1: z.number(),
-        subjectName2: z.string().optional(),
-        subjectLevel2: z.array(z.string()).optional(),
-        subjectRate2: z.number().optional(),
-        subjectName3: z.string().optional(),
-        subjectLevel3: z.array(z.string()).optional(),
-        subjectRate3: z.number().optional(),
+        display: z.boolean()
     })).mutation(async ({ ctx, input }) => {
-        const subjects = [
-            { name: input.subjectName1, level: { set: input.subjectLevel1 }, rate: input.subjectRate1 },
-        ]
-        if (input.subjectName2 && input.subjectLevel2 && input.subjectRate2) {
-            subjects.push({ name: input.subjectName2, level: { set: input.subjectLevel2 }, rate: input.subjectRate2 })
-        }
-        if (input.subjectName3 && input.subjectLevel3 && input.subjectRate3) {
-            subjects.push({ name: input.subjectName3, level: { set: input.subjectLevel3 }, rate: input.subjectRate3 })
-        }
+
         return ctx.db.tutor.create({
             data: {
                 name: input.name,
-                imageUrl: input.imageUrl,
+                citizenship: input.citizenship,
+                dob: input.dob,
+                gender: input.gender,
+                race: input.race,
+                postalCode: input.postalCode,
+                email: input.email,
+                locations: input.locations,
+                education: input.education,
                 category: input.category,
-                qualification: input.qualification,
                 school: input.school,
-                course: input.course,
-                experience: input.experience,
-                location: input.location,
+                gradYear: input.gradYear,
+                photo: input.photo,
+                availability: input.availability,
                 introduction: input.introduction,
-                subjects: {
-                    create: subjects
-                }
+                display: input.display
             },
         });
     }),

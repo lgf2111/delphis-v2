@@ -66,7 +66,7 @@ export default function Navbar() {
       <div className="navbar-end hidden gap-5 lg:flex">
         {session ? (
           <>
-            {session.user.role === "admin" ? (
+            {session.user.role === "ADMIN" ? (
               <Link href="/tutor/add" className="link-hover link font-semibold">
                 Add Tutor
               </Link>
