@@ -4,7 +4,16 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { type GetServerSideProps } from "next";
 import { getServerAuthSession } from "~/server/auth";
-import { availabilityList, displayList, locationList } from "~/utils/tutor";
+import {
+  availabilityList,
+  categoryList,
+  citizenshipList,
+  displayList,
+  educationList,
+  genderList,
+  locationList,
+  raceList,
+} from "~/utils/tutor";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getServerAuthSession(ctx);
@@ -52,6 +61,7 @@ const convertToBase64 = (file: File) => {
 function AddTutorForm() {
   const { mutate } = api.tutor.create.useMutation({
     onSuccess: (data) => {
+      console.log(data);
       toast.success(`Tutor ${data.name} created`);
       reset();
       setLocations([]);
@@ -107,7 +117,7 @@ function AddTutorForm() {
     setSelected,
   }: InputProps) {
     if (
-      (type === "checkbox" || type === "availability") &&
+      ["checkbox", "availability"].includes(type) &&
       selected &&
       setSelected
     ) {
@@ -193,6 +203,22 @@ function AddTutorForm() {
         );
       }
 
+      if (type === "select") {
+        return (
+          <select
+            {...register(name)}
+            id={name}
+            className="select select-bordered"
+          >
+            {items.map((item, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        );
+      }
+
       return (
         <input
           {...register(name)}
@@ -222,10 +248,15 @@ function AddTutorForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="grid w-3/4 gap-3">
         <h1 className="text-3xl font-bold">Add Tutor Form</h1>
         <Input label="Name" name="name" />
-        <Input label="Citizenship" name="citizenship" />
+        <Input
+          label="Citizenship"
+          name="citizenship"
+          type="select"
+          items={citizenshipList}
+        />
         <Input label="Date of Birth" name="dob" type="date" />
-        <Input label="Gender" name="gender" />
-        <Input label="Race" name="race" />
+        <Input label="Gender" name="gender" type="select" items={genderList} />
+        <Input label="Race" name="race" type="select" items={raceList} />
         <Input label="Postal Code" name="postalCode" />
         <Input label="Email" name="email" />
         <Input
@@ -236,11 +267,21 @@ function AddTutorForm() {
           selected={locations}
           setSelected={setLocations}
         />
-        <Input label="Education" name="education" />
-        <Input label="Category" name="category" />
+        <Input
+          label="Education"
+          name="education"
+          type="select"
+          items={educationList}
+        />
+        <Input
+          label="Category"
+          name="category"
+          type="select"
+          items={categoryList}
+        />
         <Input label="School" name="school" />
         <Input label="Graduation Year" name="gradYear" type="number" />
-        {/* <Input label="Photo" name="photo" /> */}
+        <Input label="Photo" name="photo" type="file" />
         <Input
           label="Availability"
           name="availability"
@@ -258,7 +299,6 @@ function AddTutorForm() {
           selected={display}
           setSelected={setDisplay}
         />
-        <Input label="Photo" name="photo" type="file" />
         <button type="submit" className="btn btn-primary">
           Submit
         </button>

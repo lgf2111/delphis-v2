@@ -1,6 +1,6 @@
 type Subject = {
     rate: number;
-    name: string;
+    names: string[];
 };
 
 export const calcMinRate = (subjects: Subject[]) => {
@@ -10,67 +10,198 @@ export const calcMinRate = (subjects: Subject[]) => {
 };
 
 export const makeSubjectNames = (subjects: Subject[]) => {
-    return subjects.map((subject) => subject.name).join(", ");
+    const uniqueNames = [...new Set(subjects.flatMap((subject) => subject.names))];
+    return uniqueNames.join(", ");
 }
 
-export const subjects = [
+export const subjectList = [
     {
-        title: "O & N Level",
+        title: "Primary",
         items: [
             "English",
-            "Mother Tongue",
-            "H. Mother Tongue",
-            "Mother Tongue B",
-            "Third Language",
-            "E. Maths",
-            "A. Maths",
-            "POA",
-            "P. Biology",
-            "P. Physics",
-            "P. Chemistry",
-            "CS (Chem/Bio)",
-            "CS (Chem/Phy)",
-            "CS (Bio/Phy)",
-            "P. Literature",
-            "P. Geography",
-            "P. History",
-            "CH (SS/Lit)",
-            "CH (SS/His)",
-            "CH (SS/Lit in MT)",
-            "D&T",
-            "F&N",
-            "Art",
-            "Music",
-            "H. Art",
-            "H. Music",
-            "Drama",
-            "Computing",
-            "Electronics",
+            "Math",
+            "Science",
+            "Chinese",
+            "Higher Chinese",
+            "Tamil",
+            "Malay",
+            "Hindi",
         ],
     },
     {
-        title: "PSLE",
+        title: "Lower Secondary",
         items: [
             "English",
-            "Mother Tongue",
-            "H. Mother Tongue",
-            "Maths",
+            "Math",
             "Science",
+            "Chinese",
+            "Higher Chinese",
+            "History",
+            "Geography",
             "Social Studies",
+            "Literature",
+            "Tamil",
+            "Malay",
+            "Higher Tamil",
+            "Higher Malay",
+            "Hindi",
+        ],
+    },
+    {
+        title: "Upper Secondary",
+        items: [
+            "English",
+            "Chinese",
+            "Higher Chinese",
+            "Additional Math",
+            "Elementary Math",
+            "Pure Physics",
+            "Pure Chemistry",
+            "Pure Biology",
+            "Combined Science (Physics/Chem)",
+            "Combined Science (Chemistry/Biology)",
+            "Combined Science (Physics/Biology)",
+            "English Literature",
+            "POA",
+            "Pure History",
+            "Pure Geography",
+            "Social Studies",
+            "Combined Humanities (History/SS)",
+            "Combined Humanities (Geography/SS)",
+            "Malay",
+            "Tamil",
+            "Combined Science (Physics Only)",
+            "Combined Science (Chemistry Only)",
+            "Combined Science (Biology Only)",
+            "Combined Humanities (Geography Only)",
+            "Combined Humanities (History Only)",
+            "Combined Humanities (SS only)",
+            "Higher Malay",
+            "Higher Tamil",
+            "Hindi",
+            "Computing",
+        ]
+    },
+    {
+        title: "JC",
+        items: [
+            "General Paper",
+            "H1 Chinese Language",
+            "H1 Math",
+            "H2 Math",
+            "H1 Physics",
+            "H2 Physics",
+            "H1 Chemistry",
+            "H2 Chemistry",
+            "H1 Biology",
+            "H2 Biology",
+            "H1 Economics",
+            "H2 Economics",
+            "H1 History",
+            "H2 History",
+            "H1 Geography",
+            "H2 Geography",
+            "H3 Math",
+            "H3 Physics",
+            "H3 Chemistry",
+            "H3 Biology",
+            "H3 Economics",
+            "H3 History",
+            "H3 Geography",
+            "H2 English Language and Linguistics",
+            "H1 Literature in English",
+            "H2 Literature in English",
+            "H3 Literature in English",
+            "H2 Knowledge & Inquiry",
+            "H2 Chinese Language and Literature",
+            "H1 China Studies in English",
+            "H2 China Studies in English",
+            "H2 China Studies in Chinese",
+            "H1 General Studies in Chinese",
+            "H2 Translation (Chinese)",
+            "H1 Malay Language",
+            "H2 Malay Language and literature",
+            "H1 Tamil Language",
+            "H2 Tamil Language and Literature",
+            "H2 POA",
+            "H2 Computing",
+            "H2 Music",
+            "H2 Management of Business",
+            "H1 Project Work (PW)",
+            "H2 Further Mathematics",
         ],
     },
 ];
+
+export const levelList = [
+    { title: "Primary", items: ["Primary"] },
+    { title: "Secondary", items: ["Lower Secondary", "Upper Secondary"] },
+    { title: "JC", items: ["JC"] },
+]
+
+export const citizenshipList = [
+    "Singaporean/PR",
+    "Foreigner"
+]
+
+export const genderList = [
+    "Male",
+    "Female",
+    "Others"
+]
+
+export const raceList = [
+    "Chinese",
+    "Malay",
+    "Indian",
+    "Others"
+]
 
 export const locationList = [
-    "NORTH",
-    "NORTH_WEST",
-    "WEST",
-    "CENTRAL",
-    "NORTH_EAST",
-    "EAST",
-    "SOUTH",
+    "North",
+    "North West",
+    "West",
+    "Central",
+    "North East",
+    "East",
+    "South",
 ];
 
+export const educationList = [
+    "N/O Level",
+    "Polytechnic/Diploma Student",
+    "Polytechnic/Diploma Graduate",
+    "A-Level Student",
+    "A-level Graduate",
+    "Undergraduate (Private)",
+    "Graduate (Private/Overseas)",
+    "Undergraduate (NUS/NTU/SMU)",
+    "Graduate (NUS/NTU/SMU)",
+    "Masters Degree Holder",
+    "PhD Holder",
+]
+
+export const categoryList = [
+    "Part-Time Tutor (Diploma/Alevel)",
+    "Part-Time Tutor (Undergraduate)",
+    "Part-Time Tutor (Graduate)",
+    "Full-Time Tutor",
+    "Ex-MOE School Teacher (Primary)",
+    "Ex-MOE School Teacher (Secondary)",
+    "Ex-MOE School Teacher (JC)",
+    "Current MOE School Teacher (Primary)",
+    "Current MOE School Teacher (Secondary)",
+    "Current MOE School Teacher (JC)",
+    "School Teacher (Pre-School)",
+    "School Teacher (Polytechnic)",
+    "School Teacher (University)",
+    "School Teacher (IB)",
+    "School Teacher (IGCSE)",
+    "Ex-School Teacher (IB)",
+    "Ex-School Teacher (IGCSE)",
+    "NIE Trainee (Primary & Secondary)",
+    "NIE Trainee (JC)",
+]
 
 export const availabilityList = [
     "MON:09",

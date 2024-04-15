@@ -67,9 +67,10 @@ function Profile(props: DetailProps) {
     display,
     updatedAt,
     createdAt,
+    subjectsByLevel,
   } = props;
 
-  // const minRate = calcMinRate(subjects);
+  const minRate = calcMinRate(subjectsByLevel);
 
   return (
     <div className="flex flex-col gap-6 bg-white p-12">
@@ -113,9 +114,9 @@ function Profile(props: DetailProps) {
           </div>
           <p>
             Starting from{" "}
-            {/* <span className="text-2xl font-medium text-primary">
+            <span className="text-2xl font-medium text-primary">
               ${minRate}
-            </span> */}
+            </span>
             /hour
           </p>
           <small>
@@ -147,17 +148,17 @@ function Profile(props: DetailProps) {
             </tr>
           </thead>
           <tbody>
-            {/* {subjects.map((subject, index) => {
-              const level = subject.level.join(", ");
+            {subjectsByLevel.map((subject, index) => {
+              const level = subject.level;
               const message = encodeURI(
                 `Delphis Tutor Request Form\n` +
                   `Tutor: ${name} (Tutor ${id})\n` +
-                  `Subject: ${subject.name}\n` +
+                  `Subject: ${subject.names.join(", ")}\n` +
                   `Education Level: ${level}`,
               );
               return (
                 <tr key={index}>
-                  <td>{subject.name}</td>
+                  <td>{subject.names.join(", ")}</td>
                   <td>{level}</td>
                   <td>{subject.rate}</td>
                   <td>
@@ -172,7 +173,7 @@ function Profile(props: DetailProps) {
                   </td>
                 </tr>
               );
-            })} */}
+            })}
           </tbody>
         </table>
       </div>

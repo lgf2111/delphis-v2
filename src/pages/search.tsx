@@ -17,7 +17,12 @@ import {
 import { GrCertificate } from "react-icons/gr";
 import { IoIosInformationCircleOutline, IoMdTime } from "react-icons/io";
 import Spinner from "~/components/spinner";
-import { calcMinRate, makeSubjectNames, subjects } from "~/utils/tutor";
+import {
+  calcMinRate,
+  levelList,
+  makeSubjectNames,
+  subjectList,
+} from "~/utils/tutor";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);
@@ -77,7 +82,7 @@ function Filters(props: FitlersProps) {
         }
       >
         <div className="flex flex-col gap-5">
-          {subjects.map((subject, index) => (
+          {subjectList.map((subject, index) => (
             <Card filter={subject} key={index} />
           ))}
         </div>
@@ -102,10 +107,6 @@ function Filters(props: FitlersProps) {
     );
   }
   function Level() {
-    const levels = [
-      { title: "Secondary School", items: ["S1", "S2", "S3", "S4", "S5"] },
-      { title: "Primary School", items: ["P1", "P2", "P3", "P4", "P5", "P6"] },
-    ];
     return (
       <Modal
         button={
@@ -115,7 +116,7 @@ function Filters(props: FitlersProps) {
         }
       >
         <div className="flex flex-col gap-5">
-          {levels.map((level, index) => (
+          {levelList.map((level, index) => (
             <Card filter={level} key={index} />
           ))}
         </div>
@@ -183,12 +184,13 @@ function Tutors({ filters }: { filters: string[] }) {
       photo,
       availability,
       introduction,
+      subjectsByLevel,
     } = props;
 
     const [tab, setTab] = useState("Profile");
 
-    // const subjectNames = makeSubjectNames(subjects);
-    // const minRate = calcMinRate(subjects);
+    const subjectNames = makeSubjectNames(subjectsByLevel);
+    const minRate = calcMinRate(subjectsByLevel);
 
     return (
       <div className="card relative bg-base-100 shadow-xl">
@@ -221,23 +223,23 @@ function Tutors({ filters }: { filters: string[] }) {
           <h2 className="card-title">{name}</h2>
           {tab === "Profile" && (
             <div className="grid grid-cols-2 grid-rows-2 pt-5">
-              {/* <Statistic
+              <Statistic
                 className="col-span-2"
                 tip={`Teaching subjects: ${subjectNames}`}
                 icon={<MdSubject />}
                 value={subjectNames}
-              /> */}
+              />
               <Statistic
                 tip={`Location: ${locations.join(", ")}`}
                 icon={<FaLocationDot />}
                 value={locations.join(", ")}
               />
 
-              {/* <Statistic
+              <Statistic
                 tip={`Rate: Starting from $${minRate}/hour`}
                 icon={<FaCircleDollarToSlot />}
                 value={`$${minRate}/hour up`}
-              /> */}
+              />
             </div>
           )}
           {tab === "Intro" && (
@@ -265,15 +267,14 @@ function Tutors({ filters }: { filters: string[] }) {
   }
 
   function TutorCards() {
-    const filteredTutors = tutors;
-    // filteredTutors = tutors?.filter((tutor) =>
-    //   filters.every((filter) =>
-    //     tutor.subjects.some(
-    //       (subject) =>
-    //         subject.name === filter || subject.level.includes(filter),
-    //     ),
-    //   ),
-    // );
+    const filteredTutors = tutors?.filter((tutor) =>
+      filters.every((filter) =>
+        tutor.subjectsByLevel.some(
+          (subject) =>
+            subject.names.includes(filter) || subject.level.includes(filter),
+        ),
+      ),
+    );
 
     useEffect(() => {
       setTutorCount(filteredTutors?.length ?? 0);
