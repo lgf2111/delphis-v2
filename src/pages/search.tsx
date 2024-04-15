@@ -265,7 +265,7 @@ function Tutors({ filters }: { filters: string[] }) {
   }
 
   function TutorCards() {
-    let filteredTutors = tutors;
+    const filteredTutors = tutors;
     // filteredTutors = tutors?.filter((tutor) =>
     //   filters.every((filter) =>
     //     tutor.subjects.some(
