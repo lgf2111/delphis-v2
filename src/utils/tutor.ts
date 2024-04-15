@@ -14,6 +14,25 @@ export const makeSubjectNames = (subjects: Subject[]) => {
     return uniqueNames.join(", ");
 }
 
+export const makeAvailabilityMatrix = (availability: string[]) => {
+    const dayMap = {
+        MON: 0,
+        TUE: 1,
+        WED: 2,
+        THU: 3,
+        FRI: 4,
+        SAT: 5,
+        SUN: 6,
+    }
+    const matrix = Array.from({ length: 12 }, () => Array.from({ length: 7 }, () => false));
+    availability.forEach((slot) => {
+        const [day, time] = slot.split(":");
+        if (!day || !time) return;
+        matrix[parseInt(time) - 9][dayMap[day]] = true;
+    });
+    return matrix;
+}
+
 export const subjectList = [
     {
         title: "Primary",

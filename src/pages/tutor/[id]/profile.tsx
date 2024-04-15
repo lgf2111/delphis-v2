@@ -9,7 +9,7 @@ import { GrCertificate } from "react-icons/gr";
 import Spinner from "~/components/spinner";
 import Statistic from "~/components/statistic";
 import { BsWhatsapp } from "react-icons/bs";
-import { calcMinRate } from "~/utils/tutor";
+import { calcMinRate, makeAvailabilityMatrix } from "~/utils/tutor";
 
 export default function TutorProfile() {
   const router = useRouter();
@@ -50,8 +50,6 @@ function Profile(props: DetailProps) {
   const {
     id,
     name,
-    citizenship,
-    dob,
     gender,
     race,
     postalCode,
@@ -71,6 +69,46 @@ function Profile(props: DetailProps) {
   } = props;
 
   const minRate = calcMinRate(subjectsByLevel);
+
+  const availabilityMatrix = makeAvailabilityMatrix(availability);
+
+  function Timetable() {
+    return (
+      <div className="overflow-x-auto">
+        <table className="table">
+          {/* head */}
+          <thead>
+            <tr className="text-center">
+              <th></th>
+              <th>MON</th>
+              <th>TUE</th>
+              <th>WED</th>
+              <th>THU</th>
+              <th>FRI</th>
+              <th>SAT</th>
+              <th>SUN</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* body */}
+            {availabilityMatrix.map((row, time) => (
+              <tr key={time}>
+                <td className="w-1">{time + 9}:00</td>
+                {row.map((isAvailable, day) => (
+                  <td
+                    key={day}
+                    className={`border border-2 border-gray-300 ${
+                      isAvailable ? "bg-green-500" : "bg-gray-200"
+                    }`}
+                  />
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6 bg-white p-12">
@@ -136,46 +174,52 @@ function Profile(props: DetailProps) {
         <h1 className="text-lg font-bold">Introduction</h1>
         {introduction ?? "This tutor has yet to provide an introduction."}
       </div>
-      <h1 className="text-lg font-bold">Teaching Subjects</h1>
-      <div className="overflow-x-auto">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Subject</th>
-              <th>Education Level</th>
-              <th>Rate ($/h)</th>
-              <th>Request</th>
-            </tr>
-          </thead>
-          <tbody>
-            {subjectsByLevel.map((subject, index) => {
-              const level = subject.level;
-              const message = encodeURI(
-                `Delphis Tutor Request Form\n` +
-                  `Tutor: ${name} (Tutor ${id})\n` +
-                  `Subject: ${subject.names.join(", ")}\n` +
-                  `Education Level: ${level}`,
-              );
-              return (
-                <tr key={index}>
-                  <td>{subject.names.join(", ")}</td>
-                  <td>{level}</td>
-                  <td>{subject.rate}</td>
-                  <td>
-                    <a
-                      href={`https://wa.me/6593836972?text=${message}`}
-                      target="_blank"
-                      className="btn btn-success btn-sm text-white"
-                    >
-                      <BsWhatsapp />
-                      Request
-                    </a>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="">
+        <h1 className="text-lg font-bold">Availability</h1>
+        {<Timetable /> ?? "This tutor has yet to provide an availability."}
+      </div>
+      <div className="">
+        <h1 className="text-lg font-bold">Teaching Subjects</h1>
+        <div className="overflow-x-auto">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Education Level</th>
+                <th>Rate ($/h)</th>
+                <th>Request</th>
+              </tr>
+            </thead>
+            <tbody>
+              {subjectsByLevel.map((subject, index) => {
+                const level = subject.level;
+                const message = encodeURI(
+                  `Delphis Tutor Request Form\n` +
+                    `Tutor: ${name} (Tutor ${id})\n` +
+                    `Subject: ${subject.names.join(", ")}\n` +
+                    `Education Level: ${level}`,
+                );
+                return (
+                  <tr key={index}>
+                    <td>{subject.names.join(", ")}</td>
+                    <td>{level}</td>
+                    <td>{subject.rate}</td>
+                    <td>
+                      <a
+                        href={`https://wa.me/6593836972?text=${message}`}
+                        target="_blank"
+                        className="btn btn-success btn-sm text-white"
+                      >
+                        <BsWhatsapp />
+                        Request
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
