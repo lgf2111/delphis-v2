@@ -25,7 +25,7 @@ export const tutorRouter = createTRPCRouter({
         category: z.string(),
         school: z.string(),
         gradYear: z.number(),
-        photo: z.string().optional(),
+        photo: z.any().optional(),
         availability: z.array(z.string()),
         introduction: z.string(),
         display: z.boolean()
@@ -45,7 +45,7 @@ export const tutorRouter = createTRPCRouter({
                 category: input.category,
                 school: input.school,
                 gradYear: input.gradYear,
-                photo: input.photo,
+                photo: input.photo as string,
                 availability: input.availability,
                 introduction: input.introduction,
                 display: input.display

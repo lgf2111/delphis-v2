@@ -36,6 +36,19 @@ type Inputs = RouterInputs["tutor"]["create"] & {
   course: string;
 };
 
+const convertToBase64 = (file: File) => {
+  return new Promise<string>((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result as string);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+};
+
 function AddTutorForm() {
   const { mutate } = api.tutor.create.useMutation({
     onSuccess: (data) => {
@@ -56,7 +69,14 @@ function AddTutorForm() {
     reset,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const photo: File = data.photo?.[0];
+    if (!photo) {
+      toast.error("Please upload a photo");
+      return;
+    }
+    data.photo = await convertToBase64(photo);
     data.locations = locations;
     data.availability = availability;
     data.display = !!display;
@@ -161,6 +181,18 @@ function AddTutorForm() {
         );
       }
 
+      if (type === "file") {
+        return (
+          <input
+            {...register(name)}
+            id={name}
+            type={type}
+            className="file-input file-input-bordered"
+            placeholder={placeholder}
+          />
+        );
+      }
+
       return (
         <input
           {...register(name)}
@@ -178,9 +210,9 @@ function AddTutorForm() {
           <label className="">{label}</label>
           {input(type)}
         </div>
-        {errors[name] && (
+        {/* {errors[name] && (
           <span className="text-red-500">{errors[name]?.message}</span>
-        )}
+        )} */}
       </div>
     );
   }
@@ -208,7 +240,7 @@ function AddTutorForm() {
         <Input label="Category" name="category" />
         <Input label="School" name="school" />
         <Input label="Graduation Year" name="gradYear" type="number" />
-        <Input label="Photo" name="photo" />
+        {/* <Input label="Photo" name="photo" /> */}
         <Input
           label="Availability"
           name="availability"
@@ -226,6 +258,7 @@ function AddTutorForm() {
           selected={display}
           setSelected={setDisplay}
         />
+        <Input label="Photo" name="photo" type="file" />
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
