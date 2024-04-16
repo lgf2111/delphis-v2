@@ -259,12 +259,8 @@ function BookModal(props: BookModalProps) {
   const { data: session } = useSession();
   const { mutate } = api.email.bookTutor.useMutation({});
   const { register, handleSubmit } = useForm<BookModalInputs>();
-  const onSubmit: SubmitHandler<BookModalInputs> = async (data) => {
-    mutate({ email, name, ...data });
-    toast.success(`Booking lesson with ${name} (Tutor ${id})`);
-  };
 
-  if (!session) {
+  if (!session?.user.email || !session?.user.name) {
     return (
       <button onClick={() => signIn("google")} className="btn btn-primary">
         <MdEmail />
@@ -272,6 +268,14 @@ function BookModal(props: BookModalProps) {
       </button>
     );
   }
+
+  const clientName = session.user.name;
+  const clientEmail = session.user.email;
+
+  const onSubmit: SubmitHandler<BookModalInputs> = async (data) => {
+    mutate({ clientName, clientEmail, email, name, ...data });
+    toast.success(`Booking lesson with ${name} (Tutor ${id})`);
+  };
 
   return (
     <Modal

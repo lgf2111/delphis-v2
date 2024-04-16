@@ -40,7 +40,9 @@ export const BookTutorTemplate: React.FC<Readonly<BookTutorTemplateProps>> = ({
       <br />
       With you all the best!
       <br />
-      Cheryl Ong
+      Cheryl
+      <br />
+      Delphis (www.delphis.com)
     </footer>
   </div>
 );

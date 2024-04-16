@@ -31,6 +31,7 @@ model Tutor {
     updatedAt DateTime @updatedAt
 
     subjectsByLevel SubjectsByLevel[]
+    Booking         Booking[]
 
     @@index([name])
 }
@@ -43,6 +44,33 @@ model SubjectsByLevel {
     rate    Float
 
     tutor Tutor @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+}
+
+model Booking {
+    id                  Int       @id @default(autoincrement())
+    tutorId             Int
+    studentId           String
+    subject             String
+    level               String
+    rate                Float
+    date                DateTime
+    time                String
+    duration            Int
+    location            String
+    status              String
+    review              String?
+    rating              Int?
+    reviewByTutor       String?
+    reviewByStudent     String?
+    reviewDate          DateTime?
+    reviewByTutorDate   DateTime?
+    reviewByStudentDate DateTime?
+
+    tutor   Tutor @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+    student User  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+    @@index([tutorId])
+    @@index([studentId])
 }
 
 // Necessary for Next auth
@@ -81,6 +109,7 @@ model User {
     role          String    @default("USER")
     accounts      Account[]
     sessions      Session[]
+    Booking       Booking[]
 }
 
 model VerificationToken {
