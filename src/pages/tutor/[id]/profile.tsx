@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { FaBook, FaLocationDot, FaSchool } from "react-icons/fa6";
 import { IoMdTime } from "react-icons/io";
-import { MdCategory } from "react-icons/md";
+import { MdCategory, MdEmail } from "react-icons/md";
 import { type RouterOutputs, api } from "~/utils/api";
 import { formatDistance, subDays } from "date-fns";
 import { GrCertificate } from "react-icons/gr";
@@ -10,6 +10,9 @@ import Spinner from "~/components/spinner";
 import Statistic from "~/components/statistic";
 import { BsWhatsapp } from "react-icons/bs";
 import { calcMinRate, makeAvailabilityMatrix } from "~/utils/tutor";
+import Modal from "~/components/modal";
+import toast from "react-hot-toast";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function TutorProfile() {
   const router = useRouter();
@@ -47,6 +50,7 @@ function Profile(props: DetailProps) {
   if (!props) {
     return <Spinner />;
   }
+
   const {
     id,
     name,
@@ -199,20 +203,28 @@ function Profile(props: DetailProps) {
                     `Subject: ${subject.names.join(", ")}\n` +
                     `Education Level: ${level}`,
                 );
+
                 return (
                   <tr key={index}>
                     <td>{subject.names.join(", ")}</td>
                     <td>{level}</td>
                     <td>{subject.rate}</td>
                     <td>
-                      <a
+                      <BookModal
+                        email={email}
+                        name={name}
+                        id={id}
+                        subject={subject}
+                        level={level}
+                      />
+                      {/* <a
                         href={`https://wa.me/6593836972?text=${message}`}
                         target="_blank"
                         className="btn btn-success btn-sm text-white"
                       >
                         <BsWhatsapp />
                         Request
-                      </a>
+                      </a> */}
                     </td>
                   </tr>
                 );
@@ -222,5 +234,102 @@ function Profile(props: DetailProps) {
         </div>
       </div>
     </div>
+  );
+}
+
+type BookModalProps = {
+  email: string;
+  name: string;
+  id: number;
+  subject: { rate: number; names: string[] };
+  level: string;
+};
+type BookModalInputs = {
+  subject: string;
+  location: string;
+  time: string;
+  duration: number;
+  message: string;
+};
+function BookModal(props: BookModalProps) {
+  const { email, name, id, subject, level } = props;
+  const { mutate } = api.email.bookTutor.useMutation({});
+  const { register, handleSubmit } = useForm<BookModalInputs>();
+  const onSubmit: SubmitHandler<BookModalInputs> = async (data) => {
+    mutate({ email, name, ...data });
+    toast.success(`Booking lesson with ${name} (Tutor ${id})`);
+  };
+
+  return (
+    <Modal
+      buttonClassName="btn btn-primary btn-sm text-white"
+      button={
+        <>
+          <MdEmail />
+          Book
+        </>
+      }
+    >
+      <h3 className="text-xl font-bold">
+        Book Lesson with{" "}
+        <span className="text-primary">
+          {name} (Tutor {id})
+        </span>
+      </h3>
+      <form
+        className="grid gap-1 py-4 text-lg"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <span>
+          Tutor: {name} (Tutor {id})
+        </span>
+        <span>
+          Subject:{" "}
+          <select {...register("subject")} value={subject.names[0]}>
+            {subject.names.map((name, index) => (
+              <option key={index} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </span>
+        <span>Level: {level}</span>
+        <div className="">
+          Location:{" "}
+          <input
+            type="text"
+            className="input input-sm input-bordered"
+            {...register("location")}
+          />
+        </div>
+        <div className="">
+          Chosen time(s):{" "}
+          <input
+            type="text"
+            className="input input-sm input-bordered"
+            {...register("time")}
+          />
+        </div>
+        <div className="">
+          Duration per lesson (min 2h):{" "}
+          <input
+            type="number"
+            className="input input-sm input-bordered"
+            {...register("duration", { valueAsNumber: true })}
+          />
+        </div>
+        <div className="">
+          Message:
+          <br />
+          <textarea
+            className="textarea textarea-bordered w-full"
+            {...register("message")}
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Book Now
+        </button>
+      </form>
+    </Modal>
   );
 }

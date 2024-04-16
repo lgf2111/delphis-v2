@@ -27,7 +27,6 @@ export const makeAvailabilityMatrix = (availability: string[]) => {
     const matrix = Array.from({ length: 12 }, () => Array.from({ length: 7 }, () => false));
     availability.forEach((slot) => {
         const [day, time] = slot.split(":");
-        if (!day || !time) return;
         // @ts-expect-error: Ignoring type error because day and time are checked above.
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         matrix[parseInt(time) - 9][dayMap[day]] = true;

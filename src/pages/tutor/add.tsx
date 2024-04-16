@@ -61,7 +61,6 @@ const convertToBase64 = (file: File) => {
 function AddTutorForm() {
   const { mutate } = api.tutor.create.useMutation({
     onSuccess: (data) => {
-      console.log(data);
       toast.success(`Tutor ${data.name} created`);
       reset();
       setLocations([]);
@@ -73,12 +72,7 @@ function AddTutorForm() {
     },
   });
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit, reset } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const photo: File = data.photo?.[0];
