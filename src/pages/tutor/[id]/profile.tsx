@@ -13,6 +13,9 @@ import { calcMinRate, makeAvailabilityMatrix } from "~/utils/tutor";
 import Modal from "~/components/modal";
 import toast from "react-hot-toast";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { GetServerSideProps } from "next";
+import { getServerAuthSession } from "~/server/auth";
+import { signIn, useSession } from "next-auth/react";
 
 export default function TutorProfile() {
   const router = useRouter();
@@ -253,12 +256,22 @@ type BookModalInputs = {
 };
 function BookModal(props: BookModalProps) {
   const { email, name, id, subject, level } = props;
+  const { data: session } = useSession();
   const { mutate } = api.email.bookTutor.useMutation({});
   const { register, handleSubmit } = useForm<BookModalInputs>();
   const onSubmit: SubmitHandler<BookModalInputs> = async (data) => {
     mutate({ email, name, ...data });
     toast.success(`Booking lesson with ${name} (Tutor ${id})`);
   };
+
+  if (!session) {
+    return (
+      <button onClick={() => signIn("google")} className="btn btn-primary">
+        <MdEmail />
+        Book
+      </button>
+    );
+  }
 
   return (
     <Modal
