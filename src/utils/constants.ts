@@ -1,6 +1,6 @@
 type Subject = {
     rate: number;
-    names: string[];
+    name: string;
 };
 
 export const calcMinRate = (subjects: Subject[]) => {
@@ -10,7 +10,7 @@ export const calcMinRate = (subjects: Subject[]) => {
 };
 
 export const makeSubjectNames = (subjects: Subject[]) => {
-    const uniqueNames = [...new Set(subjects.flatMap((subject) => subject.names))];
+    const uniqueNames = [...new Set(subjects.flatMap((subject) => subject.name))];
     return uniqueNames.join(", ");
 }
 
@@ -311,3 +311,32 @@ export const availabilityList = [
 ];
 
 export const displayList = ["OK"];
+
+export const timeOfDayList = ["9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm"]
+export const dayOfWeekList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+export const lessonCountList = [1, 2, 3, 4]
+export const monthCountList = [1, 3, 6, 9, 12]
+
+export const timeOfDayMap: Record<string, number> = {
+    "9am": 9,
+    "10am": 10,
+    "11am": 11,
+    "12pm": 12,
+    "1pm": 13,
+    "2pm": 14,
+    "3pm": 15,
+    "4pm": 16,
+    "5pm": 17,
+    "6pm": 18,
+    "7pm": 19,
+    "8pm": 20,
+}
+export const dayOfWeekMap: Record<string, number> = {
+    "Sunday": 0,
+    "Monday": 1,
+    "Tuesday": 2,
+    "Wednesday": 3,
+    "Thursday": 4,
+    "Friday": 5,
+    "Saturday": 6,
+}

@@ -1,21 +1,26 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { FaBook, FaLocationDot, FaSchool } from "react-icons/fa6";
+import React from "react";
+import { FaLocationDot, FaSchool } from "react-icons/fa6";
 import { IoMdTime } from "react-icons/io";
 import { MdCategory, MdEmail } from "react-icons/md";
-import { type RouterOutputs, api } from "~/utils/api";
+import { type RouterOutputs, api, RouterInputs } from "~/utils/api";
 import { formatDistance, subDays } from "date-fns";
 import { GrCertificate } from "react-icons/gr";
 import Spinner from "~/components/spinner";
 import Statistic from "~/components/statistic";
-import { BsWhatsapp } from "react-icons/bs";
-import { calcMinRate, makeAvailabilityMatrix } from "~/utils/tutor";
+import {
+  calcMinRate,
+  dayOfWeekList,
+  lessonCountList,
+  makeAvailabilityMatrix,
+  monthCountList,
+  timeOfDayList,
+} from "~/utils/constants";
 import Modal from "~/components/modal";
 import toast from "react-hot-toast";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { GetServerSideProps } from "next";
-import { getServerAuthSession } from "~/server/auth";
 import { signIn, useSession } from "next-auth/react";
+import { Subject } from "@prisma/client";
 
 export default function TutorProfile() {
   const router = useRouter();
@@ -72,10 +77,10 @@ function Profile(props: DetailProps) {
     display,
     updatedAt,
     createdAt,
-    subjectsByLevel,
+    subjects,
   } = props;
 
-  const minRate = calcMinRate(subjectsByLevel);
+  const minRate = calcMinRate(subjects);
 
   const availabilityMatrix = makeAvailabilityMatrix(availability);
 
@@ -198,18 +203,12 @@ function Profile(props: DetailProps) {
               </tr>
             </thead>
             <tbody>
-              {subjectsByLevel.map((subject, index) => {
+              {subjects.map((subject, index) => {
                 const level = subject.level;
-                const message = encodeURI(
-                  `Delphis Tutor Request Form\n` +
-                    `Tutor: ${name} (Tutor ${id})\n` +
-                    `Subject: ${subject.names.join(", ")}\n` +
-                    `Education Level: ${level}`,
-                );
 
                 return (
                   <tr key={index}>
-                    <td>{subject.names.join(", ")}</td>
+                    <td>{subject.name}</td>
                     <td>{level}</td>
                     <td>{subject.rate}</td>
                     <td>
@@ -220,14 +219,6 @@ function Profile(props: DetailProps) {
                         subject={subject}
                         level={level}
                       />
-                      {/* <a
-                        href={`https://wa.me/6593836972?text=${message}`}
-                        target="_blank"
-                        className="btn btn-success btn-sm text-white"
-                      >
-                        <BsWhatsapp />
-                        Request
-                      </a> */}
                     </td>
                   </tr>
                 );
@@ -244,20 +235,21 @@ type BookModalProps = {
   email: string;
   name: string;
   id: number;
-  subject: { rate: number; names: string[] };
+  subject: Subject;
   level: string;
 };
-type BookModalInputs = {
-  subject: string;
-  location: string;
-  time: string;
-  duration: number;
-  message: string;
-};
+// type BookModalInputs = {
+//   subject: string;
+//   location: string;
+//   time: string;
+//   amount: number;
+//   message: string;
+// };
+type BookModalInputs = RouterInputs["booking"]["bookTutor"];
 function BookModal(props: BookModalProps) {
-  const { email, name, id, subject, level } = props;
+  const { name, id, email, subject, level } = props;
   const { data: session } = useSession();
-  const { mutate } = api.email.bookTutor.useMutation({});
+  const { mutate } = api.booking.bookTutor.useMutation({});
   const { register, handleSubmit } = useForm<BookModalInputs>();
 
   if (!session?.user.email || !session?.user.name) {
@@ -269,12 +261,19 @@ function BookModal(props: BookModalProps) {
     );
   }
 
-  const clientName = session.user.name;
-  const clientEmail = session.user.email;
-
   const onSubmit: SubmitHandler<BookModalInputs> = async (data) => {
-    mutate({ clientName, clientEmail, email, name, ...data });
-    toast.success(`Booking lesson with ${name} (Tutor ${id})`);
+    mutate(
+      { ...data },
+      {
+        onSuccess: () => {
+          toast.success(`Booking lesson with ${name} (Tutor ${id})`);
+        },
+        onError: (error) => {
+          console.log(data);
+          toast.error(`Failed to book lesson with ${name} (Tutor ${id})`);
+        },
+      },
+    );
   };
 
   return (
@@ -297,43 +296,83 @@ function BookModal(props: BookModalProps) {
         className="grid gap-1 py-4 text-lg"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <input type="hidden" {...register("email")} value={email} />
+        <input
+          type="hidden"
+          {...register("clientEmail")}
+          value={session.user.email}
+        />
+        <input type="hidden" {...register("subjectId")} value={subject.id} />
         <span>
           Tutor: {name} (Tutor {id})
         </span>
-        <span>
-          Subject:{" "}
-          <select {...register("subject")} value={subject.names[0]}>
-            {subject.names.map((name, index) => (
-              <option key={index} value={name}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </span>
+        <span>Subject: {subject.name}</span>
         <span>Level: {level}</span>
         <div className="">
-          Location:{" "}
+          Postal Code:{" "}
           <input
             type="text"
             className="input input-sm input-bordered"
-            {...register("location")}
+            {...register("postalCode", { valueAsNumber: true })}
           />
         </div>
         <div className="">
-          Chosen time(s):{" "}
-          <input
-            type="text"
-            className="input input-sm input-bordered"
-            {...register("time")}
-          />
+          Time of Day:{" "}
+          <select
+            className="select select-bordered select-sm"
+            {...register("timeOfDay")}
+          >
+            {timeOfDayList.map((time, index) => (
+              <option key={index} value={time} selected={index === 0}>
+                {time}
+              </option>
+            ))}
+          </select>{" "}
         </div>
         <div className="">
-          Duration per lesson (min 2h):{" "}
-          <input
-            type="number"
-            className="input input-sm input-bordered"
-            {...register("duration", { valueAsNumber: true })}
-          />
+          Day of Week:{" "}
+          <select
+            className="select select-bordered select-sm"
+            {...register("dayOfWeek")}
+          >
+            {dayOfWeekList.map((day, index) => (
+              <option key={index} value={day} selected={index === 0}>
+                {day}
+              </option>
+            ))}
+          </select>{" "}
+        </div>
+        <div className="">
+          Lesson:{" "}
+          <select
+            className="select select-bordered select-sm"
+            {...register("lessonCount", {
+              valueAsNumber: true,
+            })}
+          >
+            {lessonCountList.map((lessonCount, index) => (
+              <option key={index} value={lessonCount} selected={index === 0}>
+                {lessonCount}
+              </option>
+            ))}
+          </select>{" "}
+          lesson(s) / month
+        </div>
+        <div className="">
+          Duration:{" "}
+          <select
+            className="select select-bordered select-sm"
+            {...register("monthCount", {
+              valueAsNumber: true,
+            })}
+          >
+            {monthCountList.map((monthCount, index) => (
+              <option key={index} value={monthCount} selected={index === 0}>
+                {monthCount}
+              </option>
+            ))}
+          </select>{" "}
+          month(s)
         </div>
         <div className="">
           Message:

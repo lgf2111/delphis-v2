@@ -13,7 +13,7 @@ import {
   genderList,
   locationList,
   raceList,
-} from "~/utils/tutor";
+} from "~/utils/constants";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getServerAuthSession(ctx);

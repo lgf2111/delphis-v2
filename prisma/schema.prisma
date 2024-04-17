@@ -27,36 +27,37 @@ model Tutor {
     introduction String
     display      Boolean
 
+    subjects Subject[]
+    bookings Booking[]
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
-    subjectsByLevel SubjectsByLevel[]
-    Booking         Booking[]
 
     @@index([name])
 }
 
-model SubjectsByLevel {
-    id      String   @id @default(cuid())
+model Subject {
+    id      String @id @default(cuid())
     tutorId Int
     level   String
-    names   String[]
+    name    String
     rate    Float
 
-    tutor Tutor @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+    tutor   Tutor     @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+    booking Booking[]
 }
 
 model Booking {
-    id                  Int       @id @default(autoincrement())
+    id                  String    @id @default(cuid())
     tutorId             Int
-    studentId           String
-    subject             String
-    level               String
-    rate                Float
-    date                DateTime
-    time                String
-    duration            Int
-    location            String
+    clientId            String
+    subjectId           String
+    postalCode          Int
+    timeOfDay           Int
+    dayOfWeek           Int
+    lessonCount         Int
+    monthCount          Int
+    message             String
     status              String
     review              String?
     rating              Int?
@@ -66,11 +67,15 @@ model Booking {
     reviewByTutorDate   DateTime?
     reviewByStudentDate DateTime?
 
-    tutor   Tutor @relation(fields: [tutorId], references: [id], onDelete: Cascade)
-    student User  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+    tutor   Tutor   @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+    client  User    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+    subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@index([tutorId])
-    @@index([studentId])
+    @@index([clientId])
 }
 
 // Necessary for Next auth
@@ -109,7 +114,7 @@ model User {
     role          String    @default("USER")
     accounts      Account[]
     sessions      Session[]
-    Booking       Booking[]
+    bookings      Booking[]
 }
 
 model VerificationToken {

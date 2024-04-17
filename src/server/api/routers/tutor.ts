@@ -5,11 +5,11 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/
 
 export const tutorRouter = createTRPCRouter({
     getAll: publicProcedure.query(async ({ ctx }) => {
-        return await ctx.db.tutor.findMany({ include: { subjectsByLevel: true } })
+        return await ctx.db.tutor.findMany({ include: { subjects: true } })
     }),
 
     getById: publicProcedure.input(z.object({ id: z.number() })).query(({ ctx, input }) => {
-        return ctx.db.tutor.findFirst({ where: { id: input.id }, include: { subjectsByLevel: true } });
+        return ctx.db.tutor.findFirst({ where: { id: input.id }, include: { subjects: true } });
     }),
 
     create: protectedProcedure.input(z.object({
@@ -39,23 +39,23 @@ export const tutorRouter = createTRPCRouter({
         display: z.boolean()
     })).mutation(async ({ ctx, input }) => {
 
-        const subjectsByLevel = []
+        // const subjectsByLevel = []
 
-        if (input.subjects1 && input.rate1) {
-            subjectsByLevel.push({ level: "Primary", subjects: input.subjects1, rate: input.rate1 })
-        }
+        // if (input.subjects1 && input.rate1) {
+        //     subjectsByLevel.push({ level: "Primary", subjects: input.subjects1, rate: input.rate1 })
+        // }
 
-        if (input.subjects2 && input.rate2) {
-            subjectsByLevel.push({ level: "Lower Secondary", subjects: input.subjects2, rate: input.rate2 })
-        }
+        // if (input.subjects2 && input.rate2) {
+        //     subjectsByLevel.push({ level: "Lower Secondary", subjects: input.subjects2, rate: input.rate2 })
+        // }
 
-        if (input.subjects3 && input.rate3) {
-            subjectsByLevel.push({ level: "Upper Secondary", subjects: input.subjects3, rate: input.rate3 })
-        }
+        // if (input.subjects3 && input.rate3) {
+        //     subjectsByLevel.push({ level: "Upper Secondary", subjects: input.subjects3, rate: input.rate3 })
+        // }
 
-        if (input.subjects4 && input.rate4) {
-            subjectsByLevel.push({ level: "JC", subjects: input.subjects4, rate: input.rate4 })
-        }
+        // if (input.subjects4 && input.rate4) {
+        //     subjectsByLevel.push({ level: "JC", subjects: input.subjects4, rate: input.rate4 })
+        // }
 
         return ctx.db.tutor.create({
             data: {
@@ -75,9 +75,9 @@ export const tutorRouter = createTRPCRouter({
                 availability: input.availability,
                 introduction: input.introduction,
                 display: input.display,
-                subjectsByLevel: {
-                    create: subjectsByLevel
-                }
+                // subject: {
+                //     create: subjects
+                // }
             },
         });
     }),

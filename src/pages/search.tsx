@@ -8,12 +8,7 @@ import Link from "next/link";
 import { type RouterOutputs, api } from "~/utils/api";
 import Statistic from "~/components/statistic";
 import { MdSubject } from "react-icons/md";
-import {
-  FaBook,
-  FaCircleDollarToSlot,
-  FaLocationDot,
-  FaSchool,
-} from "react-icons/fa6";
+import { FaCircleDollarToSlot, FaLocationDot, FaSchool } from "react-icons/fa6";
 import { GrCertificate } from "react-icons/gr";
 import { IoIosInformationCircleOutline, IoMdTime } from "react-icons/io";
 import Spinner from "~/components/spinner";
@@ -22,7 +17,7 @@ import {
   levelList,
   makeSubjectNames,
   subjectList,
-} from "~/utils/tutor";
+} from "~/utils/constants";
 
 export default function Search() {
   const [filters, setFilters] = useState<string[]>([]);
@@ -184,13 +179,13 @@ function Tutors({ filters }: { filters: string[] }) {
       photo,
       availability,
       introduction,
-      subjectsByLevel,
+      subjects,
     } = props;
 
     const [tab, setTab] = useState("Profile");
 
-    const subjectNames = makeSubjectNames(subjectsByLevel);
-    const minRate = calcMinRate(subjectsByLevel);
+    const subjectNames = makeSubjectNames(subjects);
+    const minRate = calcMinRate(subjects);
 
     return (
       <div className="card relative bg-base-100 shadow-xl">
@@ -269,9 +264,9 @@ function Tutors({ filters }: { filters: string[] }) {
   function TutorCards() {
     const filteredTutors = tutors?.filter((tutor) =>
       filters.every((filter) =>
-        tutor.subjectsByLevel.some(
+        tutor.subjects.some(
           (subject) =>
-            subject.names.includes(filter) || subject.level.includes(filter),
+            subject.name === filter || subject.level.includes(filter),
         ),
       ),
     );
