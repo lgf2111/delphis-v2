@@ -5,11 +5,9 @@ import { Resend } from 'resend';
 import { env } from "~/env";
 import { TRPCError } from "@trpc/server";
 import { dayOfWeekMap, timeOfDayMap } from "~/utils/constants";
-import Stripe from 'stripe';
 
 
 const resend = new Resend(env.RESEND_API_KEY);
-const stripe = new Stripe(env.STRIPE_SECRET_KEY)
 
 export const bookingRouter = createTRPCRouter({
     bookTutor: publicProcedure.input(z.object({
