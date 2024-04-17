@@ -1,3 +1,5 @@
+import { env } from "~/env";
+
 type Subject = {
     rate: number;
     name: string;
@@ -339,4 +341,8 @@ export const dayOfWeekMap: Record<string, number> = {
     "Thursday": 4,
     "Friday": 5,
     "Saturday": 6,
+}
+
+export function getKeyByValue(object: Record<string, number>, value: number) {
+    return Object.keys(object).find(key => object[key] === value);
 }

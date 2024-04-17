@@ -1,12 +1,15 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
-import { BookingTutorTemplate } from '~/components/email-template';
+import { BookingSuccessTemplate, BookingTutorTemplate, BookingPaidTemplate } from '~/components/email-template';
 import { Resend } from 'resend';
 import { env } from "~/env";
 import { TRPCError } from "@trpc/server";
 import { dayOfWeekMap, timeOfDayMap } from "~/utils/constants";
+import Stripe from 'stripe';
+
 
 const resend = new Resend(env.RESEND_API_KEY);
+const stripe = new Stripe(env.STRIPE_SECRET_KEY)
 
 export const bookingRouter = createTRPCRouter({
     bookTutor: publicProcedure.input(z.object({
@@ -83,11 +86,123 @@ export const bookingRouter = createTRPCRouter({
 
     acceptBooking: protectedProcedure.input(z.object({ id: z.string() }))
         .mutation(async ({ ctx, input }) => {
-            return ctx.db.booking.update({ where: { id: input.id }, data: { status: "ACCEPTED" } })
+            const booking = await ctx.db.booking.update({ where: { id: input.id }, data: { status: "ACCEPTED" }, include: { tutor: true, client: true, subject: true } })
+
+            if (!booking) {
+                throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
+            }
+
+            const tutor = booking.tutor;
+            const client = booking.client;
+            const subject = booking.subject;
+
+            if (!client?.name || !tutor || !subject) {
+                throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
+            }
+
+            const tutorRes = await resend.emails.send({
+                from: 'Cheryl Ong <cheryl.ong@delphistech.com>',
+                to: [`${tutor.name} <${tutor.email}>`],
+                subject: `Assignment ${booking.id} Accepted`,
+                text: "",
+                react: BookingSuccessTemplate({
+                    to: "tutor",
+                    name: tutor.name,
+                    tutorName: tutor.name,
+                    bookingId: booking.id,
+                    subjectName: subject.name,
+                    postalCode: booking.postalCode,
+                    timeOfDay: booking.timeOfDay,
+                    dayOfWeek: booking.dayOfWeek,
+                    lessonCount: booking.lessonCount,
+                    monthCount: booking.monthCount,
+                    message: booking.message,
+                }),
+            });
+
+            const clientRes = await resend.emails.send({
+                from: 'Cheryl Ong <cheryl.ong@delphistech.com>',
+                to: [`${tutor.name} <${tutor.email}>`],
+                subject: `Assignment ${booking.id} Accepted`,
+                text: "",
+                react: BookingSuccessTemplate({
+                    to: "client",
+                    name: client.name,
+                    tutorName: tutor.name,
+                    bookingId: booking.id,
+                    subjectName: subject.name,
+                    postalCode: booking.postalCode,
+                    timeOfDay: booking.timeOfDay,
+                    dayOfWeek: booking.dayOfWeek,
+                    lessonCount: booking.lessonCount,
+                    monthCount: booking.monthCount,
+                    message: booking.message,
+                }),
+            });
+            return [tutorRes, clientRes]
         }),
 
     rejectBooking: protectedProcedure.input(z.object({ id: z.string() }))
         .mutation(async ({ ctx, input }) => {
-            return ctx.db.booking.update({ where: { id: input.id }, data: { status: "REJECTED" } })
+            await ctx.db.booking.update({ where: { id: input.id }, data: { status: "REJECTED" } })
+            return
+        }),
+
+    payBooking: protectedProcedure.input(z.object({ id: z.string() }))
+        .mutation(async ({ ctx, input }) => {
+            const booking = await ctx.db.booking.update({ where: { id: input.id }, data: { status: "PAID" }, include: { tutor: true, client: true, subject: true } })
+
+            if (!booking) {
+                throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
+            }
+
+            const tutor = booking.tutor;
+            const client = booking.client;
+            const subject = booking.subject;
+
+            if (!client?.name || !tutor || !subject) {
+                throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
+            }
+
+            const tutorRes = await resend.emails.send({
+                from: 'Cheryl Ong <cheryl.ong@delphistech.com>',
+                to: [`${tutor.name} <${tutor.email}>`],
+                subject: `Assignment ${booking.id} Accepted`,
+                text: "",
+                react: BookingPaidTemplate({
+                    to: "tutor",
+                    name: tutor.name,
+                    tutorName: tutor.name,
+                    bookingId: booking.id,
+                    subjectName: subject.name,
+                    postalCode: booking.postalCode,
+                    timeOfDay: booking.timeOfDay,
+                    dayOfWeek: booking.dayOfWeek,
+                    lessonCount: booking.lessonCount,
+                    monthCount: booking.monthCount,
+                    message: booking.message,
+                }),
+            });
+
+            const clientRes = await resend.emails.send({
+                from: 'Cheryl Ong <cheryl.ong@delphistech.com>',
+                to: [`${tutor.name} <${tutor.email}>`],
+                subject: `Assignment ${booking.id} Accepted`,
+                text: "",
+                react: BookingPaidTemplate({
+                    to: "client",
+                    name: client.name,
+                    tutorName: tutor.name,
+                    bookingId: booking.id,
+                    subjectName: subject.name,
+                    postalCode: booking.postalCode,
+                    timeOfDay: booking.timeOfDay,
+                    dayOfWeek: booking.dayOfWeek,
+                    lessonCount: booking.lessonCount,
+                    monthCount: booking.monthCount,
+                    message: booking.message,
+                }),
+            });
+            return [tutorRes, clientRes]
         }),
 });

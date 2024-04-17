@@ -9,7 +9,7 @@ import { bookingRouter } from "./routers/booking";
  */
 export const appRouter = createTRPCRouter({
   tutor: tutorRouter,
-  booking: bookingRouter
+  booking: bookingRouter,
 });
 
 // export type definition of API

@@ -238,13 +238,6 @@ type BookModalProps = {
   subject: Subject;
   level: string;
 };
-// type BookModalInputs = {
-//   subject: string;
-//   location: string;
-//   time: string;
-//   amount: number;
-//   message: string;
-// };
 type BookModalInputs = RouterInputs["booking"]["bookTutor"];
 function BookModal(props: BookModalProps) {
   const { name, id, email, subject, level } = props;
@@ -270,7 +263,9 @@ function BookModal(props: BookModalProps) {
         },
         onError: (error) => {
           console.log(data);
-          toast.error(`Failed to book lesson with ${name} (Tutor ${id})`);
+          toast.error(
+            `Failed to book lesson with ${name} (Tutor ${id})\n${error.message}`,
+          );
         },
       },
     );
