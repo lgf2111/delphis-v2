@@ -13,6 +13,7 @@ import {
   genderList,
   locationList,
   raceList,
+  subjectList,
 } from "~/utils/constants";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -84,12 +85,20 @@ function AddTutorForm() {
     data.locations = locations;
     data.availability = availability;
     data.display = !!display;
+    data.subjects1 = subject1;
+    data.subjects2 = subject2;
+    data.subjects3 = subject3;
+    data.subjects4 = subject4;
 
     mutate(data);
   };
   const [locations, setLocations] = useState<string[]>([]);
   const [availability, setAvailability] = useState<string[]>([]);
   const [display, setDisplay] = useState<string[]>([]);
+  const [subject1, setSubject1] = useState<string[]>([]);
+  const [subject2, setSubject2] = useState<string[]>([]);
+  const [subject3, setSubject3] = useState<string[]>([]);
+  const [subject4, setSubject4] = useState<string[]>([]);
 
   type InputProps = {
     label: string;
@@ -165,7 +174,7 @@ function AddTutorForm() {
       if (type === "number") {
         return (
           <input
-            {...register(name, { valueAsNumber: true })}
+            {...register(name, { valueAsNumber: true, value: 0 })}
             id={name}
             type={type}
             className="input input-bordered"
@@ -253,6 +262,42 @@ function AddTutorForm() {
         <Input label="Race" name="race" type="select" items={raceList} />
         <Input label="Postal Code" name="postalCode" />
         <Input label="Email" name="email" />
+        <Input
+          label="Primary Subjects"
+          name="subjects1"
+          type="checkbox"
+          items={subjectList[0]?.items}
+          selected={subject1}
+          setSelected={setSubject1}
+        />
+        <Input label="Primary Rate" name="rate1" type="number" />
+        <Input
+          label="Lower Secondary Subjects"
+          name="subjects2"
+          type="checkbox"
+          items={subjectList[1]?.items}
+          selected={subject2}
+          setSelected={setSubject2}
+        />
+        <Input label="Lower Secondary Rate" name="rate2" type="number" />
+        <Input
+          label="Upper Secondary Subjects"
+          name="subjects3"
+          type="checkbox"
+          items={subjectList[2]?.items}
+          selected={subject3}
+          setSelected={setSubject3}
+        />
+        <Input label="Upper Secondary Rate" name="rate3" type="number" />
+        <Input
+          label="JC Subjects"
+          name="subjects4"
+          type="checkbox"
+          items={subjectList[3]?.items}
+          selected={subject4}
+          setSelected={setSubject4}
+        />
+        <Input label="JC Rate" name="rate4" type="number" />
         <Input
           label="Locations"
           name="locations"
