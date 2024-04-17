@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { FaCaretDown } from "react-icons/fa";
+import { FaCaretDown, FaMagic } from "react-icons/fa";
 import Modal from "~/components/modal";
 import { IoIosCloseCircle } from "react-icons/io";
 
@@ -134,6 +134,39 @@ function Filters(props: FitlersProps) {
     );
   }
 
+  function MatchmakingWizard() {
+    const handleClick = () => {
+      console.log("");
+    };
+    return (
+      <Modal
+        button={
+          <>
+            <FaMagic />
+          </>
+        }
+        buttonClassName="btn-primary"
+      >
+        <h3 className="text-lg font-bold">Hello!</h3>
+        <p className="py-4">
+          I&apos;m Matchmaking Wizard, and I can help you find your ideal tutor
+          in no time! <br />
+          <br />
+          All you need to do is answer a few questions, and I&apos;ll do the
+          rest!
+        </p>
+        <div className="flex justify-center">
+          <button
+            className="btn btn-primary px-10"
+            onClick={() => handleClick()}
+          >
+            Start
+          </button>
+        </div>
+      </Modal>
+    );
+  }
+
   return (
     <>
       <div className="flex justify-center">
@@ -142,6 +175,7 @@ function Filters(props: FitlersProps) {
           <Location />
           <Level />
           <Others />
+          <MatchmakingWizard />
         </div>
       </div>
       <div className="flex justify-center gap-2">
